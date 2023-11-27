@@ -1,0 +1,38 @@
+.PaddingIcon {
+  padding: 8px;
+  width: 35px;
+  height: 35px;
+  margin-top: 6px;
+  background-color: hsla(0, 0%, 100%, 0.07);
+  margin-right: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Your styles.module.css */
+
+.NavItemStyles {
+
+  }
+  .PaddingIcon:hover {
+    /* Styles applied to the container when hovering */
+    background-color: beige;
+
+  }
+  .PaddingIcon:hover .icon{
+    background-color: beige;
+    color: black !important;
+    transition: background-color 0.5s ease;
+  }
+
+.active {
+    text-decoration: none;
+    color: black;
+    background: rgb(254, 254, 254);
+  }
+  .active .icon{
+    text-decoration: none;
+    color: black;
+    background: rgb(254, 254, 254);
+  }
