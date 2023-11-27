@@ -10,8 +10,7 @@ import download5 from "../../imga/download (5).png";
 import download6 from "../../imga/download (6).png";
 import download7 from "../../imga/download (7).png";
 import { Link } from "react-router-dom";
-import {Route, Routes} from "react-router-dom";
-
+import { Route, Routes } from "react-router-dom";
 
 import {
   IconButton,
@@ -49,7 +48,7 @@ import {
 import { IconType } from "react-icons";
 import { useState } from "react";
 import Strategy from "../Strategy/Strategy.tsx";
-import Sports from '../Sports/Sports.tsx';
+import Sports from "../Sports/Sports.tsx";
 import Action from "../Action/Action.tsx";
 import Adventure from "../Adventure/Adventure.tsx";
 import Puzzle from "../Puzzle/Puzzle.tsx";
@@ -81,7 +80,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Last 30 days", icon: FiHome, },
+  { name: "Last 30 days", icon: FiHome },
   { name: "This week", icon: FiTrendingUp },
   { name: "Next week", icon: FiCompass },
   { name: "Release calendar", icon: FiStar },
@@ -152,10 +151,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </Flex>
           </Box>
         ))}
-        <h3
-        >
-          Genres
-        </h3>
+        <h3>Genres</h3>
         {LinkItemsGenres.map((item) => (
           <Link key={item.name} to={`${item.to}`}>
             <Box>
@@ -284,16 +280,15 @@ const SidebarWithHeader = () => {
       <Box ml={{ base: 0, md: 60 }} p="2">
         {/* Content */}
         <Routes>
-       {/*      <Route path="/action" exact component={Strategy} /> */}
-            <Route path="/strategy" element={<Strategy/>} />
-            <Route path="/action" element={<Action/>} />
-            <Route path="/rpg" element={<RPG/>} />
-            <Route path="/shooter" element={<Shooter/>} />
-            <Route path="/adventure" element={<Adventure/>} />
-            <Route path="/puzzle" element={<Puzzle/>} />
-            <Route path="/racing" element={<Racing/>} />
-            <Route path="/sports" element={<Sports/>} />
-        
+          {/*      <Route path="/action" exact component={Strategy} /> */}
+          <Route path="/strategy" element={<Strategy />} />
+          <Route path="/action" element={<Action />} />
+          <Route path="/rpg" element={<RPG />} />
+          <Route path="/shooter" element={<Shooter />} />
+          <Route path="/adventure" element={<Adventure />} />
+          <Route path="/puzzle" element={<Puzzle />} />
+          <Route path="/racing" element={<Racing />} />
+          <Route path="/sports" element={<Sports />} />
         </Routes>
       </Box>
     </Box>
