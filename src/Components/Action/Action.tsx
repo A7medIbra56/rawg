@@ -9,12 +9,13 @@ import {
   Image,
   Button,
   Spinner,
+  Tooltip,
 } from "@chakra-ui/react";
 import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Styles from "./Action.module.css"
+import Styles from "./Action.module.css";
 interface DataFetchGames {
   id: number;
   name: string;
@@ -42,7 +43,7 @@ export default function Action() {
           genres: "action",
         },
       });
-      
+
       console.log(data.results);
       console.log(data.results);
       setDataGamesAction(data.results);
@@ -94,6 +95,9 @@ export default function Action() {
                   className={`${index === activeItem ? MouseOut : MouseOver} `}
                 >
                   <Button>View here</Button>
+                  <Tooltip hasArrow label="Search places" bg="red.600">
+                    <Button>Button</Button>
+                  </Tooltip>
                 </CardFooter>
               </Card>
             </Link>
