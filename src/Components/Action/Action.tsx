@@ -14,7 +14,7 @@ import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Styles from "./Action.module.css"
 interface DataFetchGames {
   id: number;
   name: string;
@@ -25,6 +25,13 @@ interface DataFetchGames {
 export default function Action() {
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
+  const [MouseOver, setMouseOver] = useState<String>("d-none");
+  const [MouseOut, setMouseOut] = useState<String>("d-flex");
+  const [activeItem, setActiveItem] = useState<Number>();
+
+  const handleItemClick = (index: Number) => {
+    setActiveItem(index);
+  };
 
   const fetchGames = async () => {
     setLoading(true);
@@ -35,6 +42,8 @@ export default function Action() {
           genres: "action",
         },
       });
+      
+      console.log(data.results);
       console.log(data.results);
       setDataGamesAction(data.results);
       setLoading(false);
@@ -61,24 +70,29 @@ export default function Action() {
           spacing={4}
           templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
         >
-          {dataGamesAction.map((item) => (
-            <Link key={item.id}>
+          {dataGamesAction.map((item, index) => (
+            <Link
+              key={item.id}
+              onMouseOver={() => handleItemClick(index)}
+              onMouseOut={() => handleItemClick(index)}
+            >
               <Card bg={"hsla(0, 0%, 100%, 0.07)"}>
                 <Heading borderRadius={2}>
                   <Image
                     objectFit="cover"
                     borderTopRadius={"xl"}
                     src={`${item.background_image}`}
-                    alt="Dan Abramov"
+                    alt="Dan"
                   />
                 </Heading>
-
                 <CardBody>
                   <Text color={"white"} fontSize={"x-large"}>
                     {item.name}
                   </Text>
                 </CardBody>
-                <CardFooter>
+                <CardFooter
+                  className={`${index === activeItem ? MouseOut : MouseOver} `}
+                >
                   <Button>View here</Button>
                 </CardFooter>
               </Card>
