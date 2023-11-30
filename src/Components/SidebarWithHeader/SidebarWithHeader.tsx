@@ -153,7 +153,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         ))}
         <h3>Genres</h3>
         {LinkItemsGenres.map((item) => (
-          <Link key={item.name} to={`${item.to}`}>
+          <Link style={{ textDecoration: 'none' }} key={item.name} to={`${item.to}`}>
             <Box>
               <Flex
                 align="center"
