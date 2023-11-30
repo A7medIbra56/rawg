@@ -5,3 +5,38 @@
 .MouseOver{
     display: flex;
 }
+
+/* Styles.module.css */
+
+
+
+.windowsicon {
+    color: #0078d6; /* Windows color */
+    margin-right: 5px;
+  }
+  
+  .playstationicon {
+    color: #003791; /* PlayStation color */
+    margin-right: 5px;
+  }
+  
+  .xboxicon {
+    color: #107c10; /* Xbox color */
+    margin-right: 5px;
+  }
+  
+  .appleicon {
+    color: #b6b6b6; /* Apple color */
+    margin-right: 5px;
+  }
+  
+  .linuxicon {
+    color: #17993e; /* Linux color */
+    margin-right: 5px;
+  }
+  
+  .androidicon {
+    color: #a4c639; /* Android color */
+    margin-right: 5px;
+  }
+  

@@ -1,4 +1,3 @@
-"use client";
 import {
   SimpleGrid,
   Card,
@@ -7,10 +6,17 @@ import {
   CardFooter,
   Text,
   Image,
+  Box,
+  Tag,
+  Wrap,
   Button,
+  WrapItem,
   Spinner,
+  Spacer,
   Tooltip,
 } from "@chakra-ui/react";
+
+import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -21,10 +27,16 @@ interface DataFetchGames {
   name: string;
   background_image: ImageData;
   to: string;
+  slug: string;
+  genres: Array;
+  short_screenshots: Array;
+  metacritic: number;
+  parent_platforms: Array;
 }
 
 export default function Action() {
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]);
+  const [DataGamesGenres, setDataGamesGenres] = useState<DataFetchGames[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [MouseOver, setMouseOver] = useState<String>("d-none");
   const [MouseOut, setMouseOut] = useState<String>("d-flex");
@@ -47,12 +59,23 @@ export default function Action() {
       console.log(data.results);
       console.log(data.results);
       setDataGamesAction(data.results);
+
+      const mergedArray = [data.results[0].genres];
+      console.log(mergedArray);
       setLoading(false);
     } catch (error) {
       // Handle any errors that occurred during the fetch
       console.error("Error fetching data:", error);
     }
   };
+
+  const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
+    <Box p="1">
+      <Tag ref={ref} {...rest}>
+        {children}
+      </Tag>
+    </Box>
+  ));
 
   // Call the function
 
@@ -79,14 +102,91 @@ export default function Action() {
             >
               <Card bg={"hsla(0, 0%, 100%, 0.07)"}>
                 <Heading borderRadius={2}>
-                  <Image
-                    objectFit="cover"
-                    borderTopRadius={"xl"}
-                    src={`${item.background_image}`}
-                    alt="Dan"
-                  />
+                  <div>
+                    <div
+                      id="carouselExampleIndicators"
+                      className="carousel slide"
+                      data-ride="carousel"
+                    >
+                      <ol className="carousel-indicators">
+                        {item.short_screenshots.map((imag, index) => (
+                          <li
+                            key={index}
+                            data-target="#carouselExampleIndicators"
+                            data-slide-to={index}
+                            className={index === 0 ? "active" : ""}
+                          ></li>
+                        ))}
+                      </ol>
+                      <div className="carousel-inner">
+                        {item.short_screenshots.map((imag, index) => (
+                          <div
+                            key={index}
+                            className={`carousel-item ${
+                              index === 0 ? "active" : ""
+                            }`}
+                          >
+                            <img
+                              className="d-block w-100"
+                              src={imag.image}
+                              alt={`Slide ${index + 1}`}
+                            />
+                          </div>
+                        ))}
+                      </div>
+            
+                     
+                    </div>
+                  </div>
                 </Heading>
                 <CardBody>
+                  <div className="d-flex">
+                    {item.parent_platforms.map((plat) => (
+                      <div className={`mr-auto`} key={plat.platform.id}>
+                        {plat.platform.name === "PC" ? (
+                          <i
+                            className={`fa-brands fa-windows ${Styles.windowsicon}`}
+                          ></i>
+                        ) : plat.platform.name === "PlayStation" ? (
+                          <i
+                            className={`fa-brands fa-playstation ${Styles.playstationicon}`}
+                          ></i>
+                        ) : plat.platform.name === "Xbox" ? (
+                          <i
+                            className={`fa-brands fa-xbox ${Styles.xboxicon} `}
+                          ></i>
+                        ) : plat.platform.name === "Apple Macintosh" ? (
+                          <i
+                            className={`fa-brands fa-apple ${Styles.appleicon} `}
+                          ></i>
+                        ) : plat.platform.name === "Linux" ? (
+                          <i
+                            className={`fa-brands fa-linux ${Styles.linuxicon} `}
+                          ></i>
+                        ) : plat.platform.name === "Android" ? (
+                          <i
+                            className={`fa-solid fa-mobile-screen ${Styles.androidicon}`}
+                          ></i>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ))}
+                    <Spacer />
+                    <div className="">
+                      <CircularProgress
+                        size="30px"
+                        thickness="12px"
+                        value={55}
+                        color="green"
+                      >
+                        <CircularProgressLabel color={"white"}>
+                          {item.metacritic}%
+                        </CircularProgressLabel>
+                      </CircularProgress>
+                    </div>
+                  </div>
+
                   <Text color={"white"} fontSize={"x-large"}>
                     {item.name}
                   </Text>
@@ -94,10 +194,15 @@ export default function Action() {
                 <CardFooter
                   className={`${index === activeItem ? MouseOut : MouseOver} `}
                 >
-                  <Button>View here</Button>
-                  <Tooltip hasArrow label="Search places" bg="red.600">
-                    <Button>Button</Button>
-                  </Tooltip>
+                  {item.genres.slice(0, 3).map((ganer) => (
+                    <Wrap key={ganer.id}>
+                      <WrapItem>
+                        <Tooltip label={`${ganer.name}`}>
+                          <CustomCard>{ganer.name}</CustomCard>
+                        </Tooltip>
+                      </WrapItem>
+                    </Wrap>
+                  ))}
                 </CardFooter>
               </Card>
             </Link>
