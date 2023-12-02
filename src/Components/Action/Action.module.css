@@ -1,42 +1,56 @@
-.MouseOver
+
+
+.cardFooter
 {
-    display: none;
+  display: none !important;
 }
-.MouseOver{
-    display: flex;
+.card
+{
+  position: relative;
 }
+.card:hover .cardFooter 
+{
+  display: block !important;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+   transform: translateY(90%) ;
+   background-color:rgb(38, 38, 38);
+   border-radius: 5px;
+  z-index: 999999999; 
 
-/* Styles.module.css */
+}
+.title
+{
+  color: #fff;
+  font-size: 25px;
+  font-weight: bold;
 
-
-
-.windowsicon {
-    color: #0078d6; /* Windows color */
+}
+  .colorIcon i {
+    color: #fff; /* Apple color */
     margin-right: 5px;
   }
-  
-  .playstationicon {
-    color: #003791; /* PlayStation color */
-    margin-right: 5px;
+  .badge
+  {
+    border: solid 1px rgba(109,200,73,.4);
+    border-radius: 5px;
+   
   }
-  
-  .xboxicon {
-    color: #107c10; /* Xbox color */
-    margin-right: 5px;
+  .TextNumber
+  {
+    color: #6dc849;
+    padding: 5px;
   }
-  
-  .appleicon {
-    color: #b6b6b6; /* Apple color */
-    margin-right: 5px;
+  .btn
+  {
+    background-color: rgb(60,60, 60);
+    padding: 9px;
+    color: #fff;
+    border-radius: 10px;
   }
-  
-  .linuxicon {
-    color: #17993e; /* Linux color */
-    margin-right: 5px;
+  .btn:hover
+  {
+   color: #fad860;;
   }
-  
-  .androidicon {
-    color: #a4c639; /* Android color */
-    margin-right: 5px;
-  }
-  

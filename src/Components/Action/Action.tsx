@@ -10,13 +10,14 @@ import {
   Tag,
   Wrap,
   Button,
+  Badge,
   WrapItem,
   Spinner,
   Spacer,
   Tooltip,
+  Flex,
 } from "@chakra-ui/react";
 
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ interface DataFetchGames {
   background_image: ImageData;
   to: string;
   slug: string;
+  added: number;
   genres: Array;
   short_screenshots: Array;
   metacritic: number;
@@ -41,8 +43,9 @@ export default function Action() {
   const [MouseOver, setMouseOver] = useState<String>("d-none");
   const [MouseOut, setMouseOut] = useState<String>("d-flex");
   const [activeItem, setActiveItem] = useState<Number>();
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleItemClick = (index: Number) => {
+  const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
 
@@ -51,17 +54,13 @@ export default function Action() {
     try {
       const { data } = await Axios.get("https://api.rawg.io/api/games", {
         params: {
-          key: "de893af8a0034c2da3577be32746abc8", // https://api.rawg.io/api/games/3498/youtube
+          key: "de893af8a0034c2da3577be32746abc8",
           genres: "action",
         },
       });
 
       console.log(data.results);
-      console.log(data.results);
       setDataGamesAction(data.results);
-
-      const mergedArray = [data.results[0].genres];
-      console.log(mergedArray);
       setLoading(false);
     } catch (error) {
       // Handle any errors that occurred during the fetch
@@ -76,7 +75,9 @@ export default function Action() {
       </Tag>
     </Box>
   ));
-
+  const handleSlideChange = (index) => {
+    setActiveIndex(index);
+  };
   // Call the function
 
   useEffect(() => {
@@ -96,26 +97,39 @@ export default function Action() {
         >
           {dataGamesAction.map((item, index) => (
             <Link
-            style={{ textDecoration: 'none' }}
+              style={{ textDecoration: "none" }}
               key={item.id}
               onMouseOver={() => handleItemClick(index)}
-              onMouseOut={() => handleItemClick(index)}
+              onMouseOut={() => handleItemClick()}
             >
-              <Card bg={"hsla(0, 0%, 100%, 0.07)"}>
-                <Heading borderRadius={2}>
+              <Card bg={"hsla(0, 0%, 100%, 0.07)"} className={`${Styles.card}`}>
+                <Heading margin={0} borderRadius={2}>
+                  <Image
+                    src={`${item.background_image}`}
+                    alt=".."
+                    borderRadius={5}
+                    className={`${
+                      index === activeItem ? MouseOver : MouseOut
+                    } w=100 `}
+                  />
+                </Heading>
+                <Heading
+                  margin={0}
+                  className={`${index === activeItem ? MouseOut : MouseOver} `}
+                >
                   <div>
                     <div
-                      id="carouselExampleIndicators"
-                      className="carousel slide"
+                      id={`carouselExampleIndicators_${item.id}`}
+                      className="carousel slide "
                       data-ride="carousel"
                     >
                       <ol className="carousel-indicators">
                         {item.short_screenshots.map((imag, index) => (
                           <li
-                            key={index}
-                            data-target="#carouselExampleIndicators"
+                            key={imag.id}
+                            data-target={`#carouselExampleIndicators_${item.id}`}
                             data-slide-to={index}
-                            className={index === 0 ? "active" : ""}
+                            onClick={() => handleSlideChange(index)}
                           ></li>
                         ))}
                       </ol>
@@ -123,27 +137,29 @@ export default function Action() {
                         {item.short_screenshots.map((imag, index) => (
                           <div
                             key={index}
-                            className={`carousel-item ${
+                            className={`carousel-item  ${
                               index === 0 ? "active" : ""
                             }`}
                           >
-                            <img
-                              className="d-block w-100"
+                            <Image
+                              className="w-100"
+                              borderRadius={5}
                               src={imag.image}
-                              alt={`Slide ${index + 1}`}
+                              alt={` ${index + 1}`}
                             />
                           </div>
                         ))}
                       </div>
-            
-                     
                     </div>
                   </div>
                 </Heading>
                 <CardBody>
                   <div className="d-flex">
                     {item.parent_platforms.map((plat) => (
-                      <div className={`mr-auto`} key={plat.platform.id}>
+                      <div
+                        className={` ${Styles.colorIcon}`}
+                        key={plat.platform.id}
+                      >
                         {plat.platform.name === "PC" ? (
                           <i
                             className={`fa-brands fa-windows ${Styles.windowsicon}`}
@@ -174,36 +190,52 @@ export default function Action() {
                       </div>
                     ))}
                     <Spacer />
-                    <div className="">
-                      <CircularProgress
-                        size="30px"
-                        thickness="12px"
-                        value={55}
-                        color="green"
-                      >
-                        <CircularProgressLabel color={"white"}>
-                          {item.metacritic}%
-                        </CircularProgressLabel>
-                      </CircularProgress>
+                    <div className={`${Styles.badge}`}>
+                      <span className={`${Styles.TextNumber}`}>
+                        {item.metacritic}
+                      </span>
                     </div>
                   </div>
 
-                  <Text color={"white"} fontSize={"x-large"}>
-                    {item.name}
-                  </Text>
+                  <Text className={`${Styles.title}`}>{item.name}</Text>
+                  <Badge
+                    p={`3px`}
+                    borderRadius={5}
+                    color={"white"}
+                    background={`rgb(55, 55, 55)`}
+                    _hover={{
+                      bg: "white",
+                      color: "black",
+                    }}
+                  >
+                    <i className="fa-solid fa-plus p-1"></i>
+
+                    <span className="p-1">{item.added}</span>
+                  </Badge>
                 </CardBody>
-                <CardFooter
-                  className={`${index === activeItem ? MouseOut : MouseOver} `}
-                >
-                  {item.genres.slice(0, 3).map((ganer) => (
-                    <Wrap key={ganer.id}>
-                      <WrapItem>
-                        <Tooltip label={`${ganer.name}`}>
-                          <CustomCard>{ganer.name}</CustomCard>
-                        </Tooltip>
-                      </WrapItem>
-                    </Wrap>
-                  ))}
+                <CardFooter className={`${Styles.cardFooter}`}>
+                  <div className="d-flex">
+                    <Text
+                      color={"white"}
+                      opacity={0.5}
+                      fontSize={"x-small"}
+                      marginLeft={2}
+                    >
+                      Release date :
+                    </Text>
+                    <Spacer />
+                    {item.genres.slice(0, 3).map((ganer) => (
+                      <Text color={"white"} fontSize={"x-small"} marginLeft={1}>
+                        {ganer.name}
+                      </Text>
+                    ))}
+                  </div>
+                  <div className="gap-2 ">
+                    <button className={`${Styles.btn}  w-100`} type="button">
+                    <span className="m-4">Show more like this</span>
+                    <i className="fa-solid fa-chevron-right"></i>
+                    </button>
+                  </div>
                 </CardFooter>
               </Card>
             </Link>
