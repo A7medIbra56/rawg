@@ -197,7 +197,7 @@ export default function Action() {
                     </div>
                   </div>
 
-                  <Text className={`${Styles.title}`}>{item.name}</Text>
+                  <Text className={`${Styles.title}`}>{item.name} <i className={`${item.metacritic >=90  ? `fa-solid fa-thumbs-up text-warning` : `fa-solid fa-heart text-danger` }`}></i></Text>
                   <Badge
                     p={`3px`}
                     borderRadius={5}
@@ -221,11 +221,26 @@ export default function Action() {
                       fontSize={"x-small"}
                       marginLeft={2}
                     >
-                      Release date :
+                      Release date : 
+                    </Text>
+                    <Spacer />
+                      <Text color={"white"} fontSize={"x-small"} marginLeft={1}>
+                        {item.released}
+                      </Text>
+               
+                  </div>
+                  <div className="d-flex">
+                    <Text
+                      color={"white"}
+                      opacity={0.5}
+                      fontSize={"x-small"}
+                      marginLeft={2}
+                    >
+                      Genres :
                     </Text>
                     <Spacer />
                     {item.genres.slice(0, 3).map((ganer) => (
-                      <Text color={"white"} fontSize={"x-small"} marginLeft={1}>
+                      <Text key={ganer.id} color={"white"} fontSize={"x-small"} marginLeft={1}>
                         {ganer.name}
                       </Text>
                     ))}
