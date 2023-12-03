@@ -34,6 +34,7 @@ import {
   MenuItem,
   MenuList,
   Image,
+  Spacer,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -114,8 +115,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            Logo
+          <Text color={"white"} fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+            RAWG
           </Text>
 
           <CloseButton
@@ -123,7 +124,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             onClick={onClose}
           />
         </Flex>
-        <h3>Reviews</h3>
+        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>Reviews</Text>
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
