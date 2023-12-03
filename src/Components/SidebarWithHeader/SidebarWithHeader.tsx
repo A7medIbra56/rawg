@@ -116,23 +116,20 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <Text
-            color={"white"}
-            fontSize="3xl"
-            fontFamily="monospace"
-            fontWeight="bold"
+          <h3
+        
           >
             RAWG GAMES
-          </Text>
+          </h3>
 
           <CloseButton
             display={{ base: "flex", md: "none" }}
             onClick={onClose}
           />
         </Flex>
-        <Box ml={6} pt={2} fontSize={"3xl"} color={"white"}>
+        <h2>
           Reviews
-        </Box>
+        </h2>
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
