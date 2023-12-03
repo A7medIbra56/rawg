@@ -130,9 +130,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             onClick={onClose}
           />
         </Flex>
-        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>
+        <Box ml={6} pt={2} fontSize={"3xl"} color={"white"}>
           Reviews
-        </Text>
+        </Box>
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
@@ -208,15 +208,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
+      <h3
+
         color={"white"}
-        fontFamily="monospace"
-        fontWeight="bold"
       >
         RAWG
-      </Text>
+      </h3>
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
@@ -225,15 +222,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           aria-label="open menu"
           icon={<FiBell />}
         />
-        <Text
-          display={{ base: "flex", md: "none" }}
-          fontSize="2xl"
-          color={"white"}
-          fontFamily="monospace"
-          fontWeight="bold"
-        >
-          Login
-        </Text>
         <Flex alignItems={"center"}></Flex>
       </HStack>
     </Flex>
