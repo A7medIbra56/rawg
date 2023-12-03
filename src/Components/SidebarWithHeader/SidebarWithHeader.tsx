@@ -116,14 +116,21 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-       
+          <h3
+            className={`${styles.TextFont}`}
+          >
+            RAWG
+          </h3>
 
           <CloseButton
             display={{ base: "flex", md: "none" }}
+            background={"white"}
             onClick={onClose}
           />
         </Flex>
-   
+        <h3  className={`${styles.TextFont2}`}>
+          Reviews
+        </h3>
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
@@ -151,7 +158,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </Flex>
           </Box>
         ))}
-       
+        <h3 className={`${styles.TextFont2}`}>
+          Genres
+        </h3>
         {LinkItemsGenres.map((item) => (
           <Link
             style={{ textDecoration: "none" }}
@@ -197,7 +206,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-     
+      <h3
+
+        color={"white"}
+      >
+        RAWG
+      </h3>
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
