@@ -116,20 +116,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <h3
-        
-          >
-            RAWG GAMES
-          </h3>
+       
 
           <CloseButton
             display={{ base: "flex", md: "none" }}
             onClick={onClose}
           />
         </Flex>
-        <h2>
-          Reviews
-        </h2>
+   
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
@@ -157,9 +151,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </Flex>
           </Box>
         ))}
-        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>
-          Genres
-        </Text>
+       
         {LinkItemsGenres.map((item) => (
           <Link
             style={{ textDecoration: "none" }}
@@ -205,12 +197,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <h3
-
-        color={"white"}
-      >
-        RAWG
-      </h3>
+     
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
