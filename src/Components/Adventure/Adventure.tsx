@@ -113,6 +113,7 @@ export default function Adventure() {
           >
             {dataGamesAction.map((item, index) => (
               <Link
+              to={`/actionId/${item.id}`}
                 style={{ textDecoration: "none" }}
                 key={item.id}
                 onMouseOver={() => handleItemClick(index)}
