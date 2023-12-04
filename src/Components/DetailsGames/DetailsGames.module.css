@@ -14,6 +14,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  padding: 20px;
   background-color: #130e0ec8;
 }
 .dataBarth {
@@ -26,4 +27,56 @@ margin-right: 20px;
   border-radius: 5px;
   font-size: 13px;
 
+}
+
+.progressGreen
+{
+  background-image: linear-gradient(180deg,#b4ec51,#429321);
+  
+}
+.progressGreen:hover
+{
+  box-shadow: 0 0 10px 0 #fff;
+  border: solid 1px #fff;
+}
+.progressGradient
+{
+  background-image: linear-gradient(0deg,#4354b9,#649bff);
+  
+}
+.progressGradient:hover
+{
+  box-shadow: 0 0 10px 0 #fff;
+  border: solid 1px #fff;
+}
+.progressOreg
+{
+  background-image: linear-gradient(180deg,#fad961,#f76b1c);
+}
+.progressOreg:hover
+{
+  box-shadow: 0 0 10px 0 #fff;
+  border: solid 1px #fff;
+}
+.progressRead
+{
+  background-image: linear-gradient(180deg,#ff5764,#f11a2a);
+}
+.progressRead:hover
+{
+  box-shadow: 0 0 10px 0 #fff;
+  border: solid 1px #fff;
+}
+
+.exclamation
+{
+  font-size: 30px;
+  margin-right: 20px;
+color: #f6f6f6;
+}
+.thumbs
+{
+  font-size: 30px;
+  margin-right: 20px;
+color: #e95702;
 }
