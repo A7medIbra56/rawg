@@ -148,7 +148,7 @@ export default function DetailsGames() {
         </Flex>
         <Text fontSize={"6xl"} fontWeight={"bold"} color={'white'}>{dataGamesAction.name}</Text>
         </Box>
-       
+       <Text>ay7agg</Text>
         <Box className={`${Styles.bgDetailsGamesItem}`}>
           <img className="w-100" src={`${dataGamesAction.background_image_additional}`} alt="" />
         </Box>
