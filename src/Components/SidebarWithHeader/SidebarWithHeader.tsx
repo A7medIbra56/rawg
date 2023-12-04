@@ -56,6 +56,7 @@ import Puzzle from "../Puzzle/Puzzle.tsx";
 import Racing from "../Racing/Racing.tsx";
 import RPG from "../RPG/RPG.tsx";
 import Shooter from "../Shooter/Shooter.tsx";
+import DetailsGames from "../DetailsGames/DetailsGames.tsx";
 
 interface LinkItemProps {
   name: string;
@@ -107,6 +108,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <>
       <Box
+      
         transition="3s ease"
         borderRightColor={useColorModeValue("gray.200", "gray.700")}
         w={{ base: "full", md: 60 }}
@@ -115,8 +117,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         {...rest}
       >
         <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-          <Text color={"white"} fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-            RAWG
+          <Text
+            color={"white"}
+            fontSize="3xl"
+            fontFamily="monospace"
+            fontWeight="bold"
+          >
+            RAWG GAMES
+
           </Text>
 
           <CloseButton
@@ -124,7 +132,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             onClick={onClose}
           />
         </Flex>
-        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>Reviews</Text>
+
+        <Box ml={6} pt={2} fontSize={"3xl"} color={"white"}>
+          Reviews
+        </Box>
+
         {LinkItems.map((link, index1) => (
           <Box key={link.name}>
             <Flex
@@ -152,9 +164,15 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             </Flex>
           </Box>
         ))}
-        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>Genres</Text>
+        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>
+          Genres
+        </Text>
         {LinkItemsGenres.map((item) => (
-          <Link style={{ textDecoration: 'none' }} key={item.name} to={`${item.to}`}>
+          <Link
+            style={{ textDecoration: "none" }}
+            key={item.name}
+            to={`${item.to}`}
+          >
             <Box>
               <Flex
                 align="center"
@@ -194,14 +212,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
+      <h3
+
         color={"white"}
-        fontFamily="monospace"
-        fontWeight="bold"
-      >RAWG
-      </Text>
+      >
+        RAWG
+      </h3>
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
@@ -210,8 +226,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           aria-label="open menu"
           icon={<FiBell />}
         />
-        <Flex alignItems={"center"}>
-        </Flex>
+        <Flex alignItems={"center"}></Flex>
       </HStack>
     </Flex>
   );
@@ -226,13 +241,12 @@ const SidebarWithHeader = () => {
       />
       <Drawer
         isOpen={isOpen}
-        placement="left"
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
         size="full"
       >
-        <DrawerContent>
+        <DrawerContent bg={useColorModeValue("#151515", "#151515")}>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
@@ -244,6 +258,9 @@ const SidebarWithHeader = () => {
           {/*      <Route path="/action" exact component={Strategy} /> */}
           <Route path="/strategy" element={<Strategy />} />
           <Route path="/action" element={<Action />} />
+          <Route path="/detailsGames" element={<DetailsGames />}>
+            <Route path=":id" element={<DetailsGames />}></Route>
+          </Route>
           <Route path="/rpg" element={<RPG />} />
           <Route path="/shooter" element={<Shooter />} />
           <Route path="/adventure" element={<Adventure />} />
