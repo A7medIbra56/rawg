@@ -212,15 +212,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <h3 color={"white"}>RAWG</h3>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
-        <Flex alignItems={"center"}></Flex>
-      </HStack>
+     
     </Flex>
   );
 };
@@ -237,15 +229,14 @@ const SidebarWithHeader = () => {
         onClose={onClose}
         returnFocusOnClose={true}
         onOverlayClick={onClose}
-        
-        size="full"
+        size="xs" 
       >
         <DrawerContent  bg={useColorModeValue("#151515", "#151515")}>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav  onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="2">
         {/* Content */}
         <Routes>
