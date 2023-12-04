@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import styles from "./Nav.module.css";
 import download from "../../imga/download.png";
@@ -108,7 +107,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <>
       <Box
-      
         transition="3s ease"
         borderRightColor={useColorModeValue("gray.200", "gray.700")}
         w={{ base: "full", md: 60 }}
@@ -124,10 +122,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             fontWeight="bold"
           >
             RAWG GAMES
-
           </Text>
 
           <CloseButton
+          bg={"white"}
             display={{ base: "flex", md: "none" }}
             onClick={onClose}
           />
@@ -181,7 +179,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 color="white"
                 cursor="pointer"
               >
-                <Image width={7} pt={2} mr={3} src={`${item.Img}`} />
+                <Image  width={7} pt={2} mr={3} src={`${item.Img}`} />
                 {item.name}
               </Flex>
             </Box>
@@ -212,12 +210,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <h3
-
-        color={"white"}
-      >
-        RAWG
-      </h3>
+      <h3 color={"white"}>RAWG</h3>
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
@@ -234,7 +227,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 const SidebarWithHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue("#151515", "#151515")}>
+    <Box  minH="100vh" bg={useColorModeValue("#151515", "#151515")}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -242,11 +235,12 @@ const SidebarWithHeader = () => {
       <Drawer
         isOpen={isOpen}
         onClose={onClose}
-        returnFocusOnClose={false}
+        returnFocusOnClose={true}
         onOverlayClick={onClose}
+        
         size="full"
       >
-        <DrawerContent bg={useColorModeValue("#151515", "#151515")}>
+        <DrawerContent  bg={useColorModeValue("#151515", "#151515")}>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>

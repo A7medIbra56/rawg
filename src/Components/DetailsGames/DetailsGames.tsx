@@ -18,10 +18,16 @@ import {
   WrapItem,
   Spinner,
   Spacer,
+  Grid,
   Tooltip,
   Flex,
 } from "@chakra-ui/react";
-
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from "@chakra-ui/react";
 import Styles from "./DetailsGames.module.css";
 
 export default function DetailsGames() {
@@ -29,6 +35,7 @@ export default function DetailsGames() {
     id: number;
     name: string;
     background_image: ImageData;
+    background_image_additional: ImageData;
     to: string;
     slug: string;
     description: String;
@@ -70,37 +77,82 @@ export default function DetailsGames() {
 
   return (
     <>
-      <Box
+      <Breadcrumb
+        color={"white"}
+       
+        fontWeight="medium"
+        fontSize="sm"
+      >
+        <BreadcrumbItem>
+          <BreadcrumbLink
+           opacity={0.5}
+            _hover={{
+              opacity: 1,
+              color: "white",
+            }}
+            href="#"
+          >
+            Home
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+
+        <BreadcrumbItem>
+          <BreadcrumbLink
+           opacity={0.5}
+            _hover={{
+              opacity: 1,
+              color: "white",
+            }}
+            href="#"
+          >
+            About
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href="#">{dataGamesAction.name}</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
+      <Grid 
         backgroundImage={`url(${dataGamesAction.background_image})`}
         className={Styles.bgDetailsGames}
+        templateColumns={['1fr', 'repeat(2, 1fr)']}
+      
       >
-        <div className={`${Styles.bgDetailsGamesItem}`} >
-        {dataGamesAction.parent_platforms?.map((plat) => (
-          <div className={` ${Styles.colorIcon}`} key={plat.platform.id}>
-            {plat.platform.name === "PC" ? (
-              <i className={`fa-brands fa-windows ${Styles.windowsicon}`}></i>
-            ) : plat.platform.name === "PlayStation" ? (
-              <i
-                className={`fa-brands fa-playstation ${Styles.playstationicon}`}
-              ></i>
-            ) : plat.platform.name === "Xbox" ? (
-              <i className={`fa-brands fa-xbox ${Styles.xboxicon} `}></i>
-            ) : plat.platform.name === "Apple Macintosh" ? (
-              <i className={`fa-brands fa-apple ${Styles.appleicon} `}></i>
-            ) : plat.platform.name === "Linux" ? (
-              <i className={`fa-brands fa-linux ${Styles.linuxicon} `}></i>
-            ) : plat.platform.name === "Android" ? (
-              <i
-                className={`fa-solid fa-mobile-screen ${Styles.androidicon}`}
-              ></i>
-            ) : (
-              ""
-            )}
-          </div>
-        ))}
-        </div>
+        <Box className={`${Styles.bgDetailsGamesItem}`}>
+        <Flex  >
+          <div className={`${Styles.dataBarth}`} >{dataGamesAction.updated}</div>
+          {dataGamesAction.parent_platforms?.map((plat) => (
+            <div className={` ${Styles.colorIcon}`} key={plat.platform.id}>
+              {plat.platform.name === "PC" ? (
+                <i className={`fa-brands fa-windows ${Styles.windowsicon}`}></i>
+              ) : plat.platform.name === "PlayStation" ? (
+                <i
+                  className={`fa-brands fa-playstation ${Styles.playstationicon}`}
+                ></i>
+              ) : plat.platform.name === "Xbox" ? (
+                <i className={`fa-brands fa-xbox ${Styles.xboxicon} `}></i>
+              ) : plat.platform.name === "Apple Macintosh" ? (
+                <i className={`fa-brands fa-apple ${Styles.appleicon} `}></i>
+              ) : plat.platform.name === "Linux" ? (
+                <i className={`fa-brands fa-linux ${Styles.linuxicon} `}></i>
+              ) : plat.platform.name === "Android" ? (
+                <i
+                  className={`fa-solid fa-mobile-screen ${Styles.androidicon}`}
+                ></i>
+              ) : (
+                ""
+              )}
+            </div>
+          ))}
+        </Flex>
+        <Text fontSize={"6xl"} fontWeight={"bold"} color={'white'}>{dataGamesAction.name}</Text>
+        </Box>
        
-      </Box>
+        <Box className={`${Styles.bgDetailsGamesItem}`}>
+          <img className="w-100" src={`${dataGamesAction.background_image_additional}`} alt="" />
+        </Box>
+      </Grid>
     </>
   );
 }
