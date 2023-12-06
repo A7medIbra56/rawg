@@ -229,6 +229,7 @@ const SidebarWithHeader = () => {
         onClose={onClose}
         returnFocusOnClose={true}
         onOverlayClick={onClose}
+        colorScheme="white"
         size="xs" 
       >
         <DrawerContent  bg={useColorModeValue("#151515", "#151515")}>
