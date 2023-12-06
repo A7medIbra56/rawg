@@ -241,6 +241,7 @@ const SidebarWithHeader = () => {
         {/* Content */}
         <Routes>
           {/*      <Route path="/action" exact component={Strategy} /> */}
+          <Route path="/" element={<Action />} />
           <Route path="/strategy" element={<Strategy />} />
           <Route path="/action" element={<Action />} />
           <Route path="/detailsGames" element={<DetailsGames />}>

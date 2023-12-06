@@ -9,6 +9,7 @@ import {
   CardBody,
   CardFooter,
   Text,
+  HStack,
   Image,
   Box,
   Tag,
@@ -23,11 +24,22 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
+  List,
+  ListItem,
+  ListIcon,
+  OrderedList,
+  UnorderedList,
+} from "@chakra-ui/react";
+import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@chakra-ui/react";
+
+import { FaPlaystation, FaXbox, FaSteam } from "react-icons/fa";
+import { SiEpicgames } from "react-icons/si";
+
 import Styles from "./DetailsGames.module.css";
 
 export default function DetailsGames() {
@@ -38,14 +50,17 @@ export default function DetailsGames() {
     background_image_additional: ImageData;
     to: string;
     slug: string;
-    description: String;
+    description_raw: String;
     added: number;
     alternative_names: Array;
     publishers: Array;
     genres: Array;
+    stores: Array;
     short_screenshots: Array;
     metacritic: number;
     parent_platforms: Array;
+    platforms: Array;
+    ratings: Array;
   }
 
   const { id } = useParams();
@@ -69,10 +84,13 @@ export default function DetailsGames() {
     }
   };
 
+
+
   // Call the function
 
   useEffect(() => {
     fetchGames();
+
   }, []);
 
   return (
@@ -108,12 +126,13 @@ export default function DetailsGames() {
           <BreadcrumbLink href="#">{dataGamesAction.name}</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
+
       <Grid
         backgroundImage={`url(${dataGamesAction.background_image})`}
         className={Styles.bgDetailsGames}
         templateColumns={["1fr", "repeat(2, 1fr)"]}
       >
-        <Box className={`${Styles.bgDetailsGamesItem}`}>
+        <Box padding={3} className={`${Styles.bgDetailsGamesItem}`}>
           <Flex>
             <div className={`${Styles.dataBarth}`}>
               {dataGamesAction.updated}
@@ -147,49 +166,152 @@ export default function DetailsGames() {
           <Text fontSize={"6xl"} fontWeight={"bold"} color={"white"}>
             {dataGamesAction.name}
           </Text>
-          <div className="progress" style={{height:'40px'}}>
+          <div className="progress" style={{ height: "40px" }}>
             <div
               className={`progress-bar ${Styles.progressGreen}`}
               role="progressbar"
-              style={{ width: "15%" }}
-              aria-valuenow="15"
-              aria-valuemin="0"
+              style={{ width: `${51.87}%` }}
               aria-valuemax="100"
-            ><i className={`fa-solid fa-circle-exclamation ${Styles.exclamation}`}></i></div>
+            >
+              <i
+                className={`fa-solid fa-circle-exclamation ${Styles.exclamation}`}
+              ></i>
+            </div>
             <div
               className={`progress-bar ${Styles.progressGradient} `}
               role="progressbar"
-              style={{ width: "30%" }}
-              aria-valuenow="30"
-              aria-valuemin="0"
+              style={{ width: `${27.43}%` }}
               aria-valuemax="100"
             >
-              <i className={`fa-solid fa-thumbs-up text-warning ${Styles.thumbs} `}></i>
+              <i
+                className={`fa-solid fa-thumbs-up text-warning ${Styles.thumbs} `}
+              ></i>
             </div>
             <div
               className={`progress-bar text-warning ${Styles.progressOreg} `}
               role="progressbar"
-              style={{ width: "20%" }}
-              aria-valuenow="20"
-              aria-valuemin="0"
+              style={{ width: `${10.44}%` }}
               aria-valuemax="100"
-            ><i className={`fa-solid fa-face-meh text-warning ${Styles.thumbs}`}></i></div>
+            >
+              <i
+                className={`fa-solid fa-face-meh text-warning ${Styles.thumbs}`}
+              ></i>
+            </div>
             <div
               className={`progress-bar ${Styles.progressRead} `}
               role="progressbar"
-              style={{ width: "50%" }}
-              aria-valuenow="20"
-              aria-valuemin="0"
+              style={{ width: `${10.25}%` }}
               aria-valuemax="100"
-            ><i className={`fa-regular fa-face-grin-tongue-squint ${Styles.exclamation}`}></i></div>
+            >
+              <i
+                className={`fa-regular fa-face-grin-tongue-squint ${Styles.exclamation}`}
+              ></i>
+            </div>
           </div>
+          <List color={"white"} padding={5}>
+            <Flex>
+              {dataGamesAction.ratings?.map((rat) => (
+                <ListItem key={rat.id} className={`${Styles.ListItem}`}>
+                  {rat.title === "exceptional" ? (
+                    <i
+                      className={`fa-solid fa-circle   ${Styles.circleGreen}`}
+                    ></i>
+                  ) : rat.title === "recommended" ? (
+                    <i
+                      className={`fa-solid fa-circle ${Styles.circleMove}`}
+                    ></i>
+                  ) : rat.title === "meh" ? (
+                    <i
+                      className={`fa-solid fa-circle  ${Styles.circleOrg}`}
+                    ></i>
+                  ) : rat.title === "skip" ? (
+                    <i
+                      className={`fa-solid fa-circle  ${Styles.circleRead}`}
+                    ></i>
+                  ) : (
+                    ""
+                  )}
+                  <span className="">
+                    {" "}
+                    {rat.title} <strong>{rat.count}</strong>{" "}
+                  </span>
+                </ListItem>
+              ))}
+            </Flex>
+          </List>
+          <Text p={2} fontSize={"xl"} color={"hsla(0,0%,90%,.8)"}>
+            About
+          </Text>
+          <Text p={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
+            {dataGamesAction.description_raw}
+          </Text>
         </Box>
-        <Box className={`${Styles.bgDetailsGamesItem}`}>
+        <Box padding={3} className={`${Styles.bgDetailsGamesItem}`}>
           <img
             className="w-100"
             src={`${dataGamesAction.background_image_additional}`}
-            alt=""
+            alt="000"
           />
+          <Text p={3} fontSize={"xl"} color={"hsla(0,0%,90%,.8)"}>
+            Where to buy
+          </Text>
+          <Wrap spacing={3} marginTop={5}>
+            {dataGamesAction.stores?.map((storeOne) => (
+              <WrapItem key={storeOne.store.id}>
+                {storeOne.store.name === "Steam" ? (
+                  <Button
+                    background={`hsla(0,0%,100%,.2)`}
+                    color={"hsla(0,0%,90%,.8)"}
+                    _hover={{
+                      bg: "white",
+                      color: "black",
+                    }}
+                    rightIcon={<FaSteam />}
+                  >
+                    {storeOne.store.name}
+                  </Button>
+                ) : storeOne.store.name === "Epic Games" ? (
+                  <Button
+                    background={`hsla(0,0%,100%,.2)`}
+                    color={"hsla(0,0%,90%,.8)"}
+                    _hover={{
+                      bg: "white",
+                      color: "black",
+                    }}
+                    rightIcon={<SiEpicgames />}
+                  >
+                    {storeOne.store.name}
+                  </Button>
+                ) : storeOne.store.name === "PlayStation Store" ? (
+                  <Button
+                    background={`hsla(0,0%,100%,.2)`}
+                    color={"hsla(0,0%,90%,.8)"}
+                    _hover={{
+                      bg: "white",
+                      color: "black",
+                    }}
+                    rightIcon={<FaPlaystation />}
+                  >
+                    {storeOne.store.name}
+                  </Button>
+                ) : storeOne.store.name === "Xbox Store" ? (
+                  <Button
+                    background={`hsla(0,0%,100%,.2)`}
+                    color={"hsla(0,0%,90%,.8)"}
+                    _hover={{
+                      bg: "white",
+                      color: "black",
+                    }}
+                    rightIcon={<FaXbox />}
+                  >
+                    {storeOne.store.name}
+                  </Button>
+                ) : (
+                  ""
+                )}
+              </WrapItem>
+            ))}
+          </Wrap>
         </Box>
       </Grid>
     </>
