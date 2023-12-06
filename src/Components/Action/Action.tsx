@@ -8,6 +8,9 @@ import {
   Image,
   Box,
   Tag,
+  Tab,
+  Tabs,
+  TabList,
   Wrap,
   Button,
   Badge,
@@ -17,6 +20,9 @@ import {
   Tooltip,
   Flex,
 } from "@chakra-ui/react";
+import { FaPlaystation, FaXbox, FaSteam } from "react-icons/fa";
+import { BsColumnsGap } from "react-icons/bs";
+import { LuRows } from "react-icons/lu";
 
 import Axios from "axios";
 import React from "react";
@@ -41,8 +47,14 @@ export default function Action() {
   const [loading, setLoading] = useState<Boolean>(false);
   const [MouseOver, setMouseOver] = useState<String>("d-none");
   const [MouseOut, setMouseOut] = useState<String>("d-flex");
+  const [switchColumns, setSwitchColumns] = useState<string>("true");
   const [activeItem, setActiveItem] = useState<Number>();
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const LinkItemsGenres = [
+    { name: "Action", Icon: "LuRows", to: "/action" },
+    { name: "Strategy", Icon: "BsColumnsGap", to: "/strategy" },
+  ];
 
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
@@ -102,13 +114,61 @@ export default function Action() {
             first action games, released in 1972; the latest include
             Battlefield, Assasin's Creed, Fortnite and Dark Souls.
           </p>
+          <WrapItem>
+            <Text marginTop={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
+              Display options:
+            </Text>
+            <Button
+              background={`hsla(0,0%,100%,.2)`}
+              paddingLeft={1}
+              onClick={() => setSwitchColumns("false")}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              rightIcon={<LuRows fontSize={"30px"} />}
+            />
+            <Button
+              background={`hsla(0,0%,100%,.2)`}
+              paddingLeft={1}
+              onClick={() => setSwitchColumns("true")}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              _active={
+                {
+                  background:"white"
+                }
+              }
+              rightIcon={<BsColumnsGap fontSize={"30px"} />}
+            />
+          </WrapItem>
           <SimpleGrid
             spacing={4}
-            templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+            /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
+            templateColumns={
+              switchColumns === "false"
+                ? "repeat(auto-fill, minmax(50%, 1fr))"
+                : "repeat(auto-fill, minmax(300px, 1fr))"
+            }
+            padding={switchColumns === "false" ? 5 : 0}
+            width={switchColumns === "false" ? "50%" : ""}
+            margin={switchColumns === "false" ? "auto" : ""}
+            /* {
+            switchColumns === "true" ?( templateColumns="repeat(auto-fill, minmax(50%, 1fr))"
+            padding={5}
+            width={"50%"}
+            margin={"auto"}) : ''
+           } */
           >
             {dataGamesAction.map((item, index) => (
               <Link
-              to={`/detailsGames/${item.id}`}
+                to={`/detailsGames/${item.id}`}
                 style={{ textDecoration: "none" }}
                 key={item.id}
                 onMouseOver={() => handleItemClick(index)}
