@@ -3,24 +3,40 @@
 .cardFooter
 {
   display: none !important;
+  border-radius: 10px;
+  z-index: 9999;
+  
 }
 .card
 {
   position: relative;
+  transition: all .3s;
+  margin: 2px;}
+.card:hover
+{
+  transition: all .3s;
+  margin: 0px;
+ 
 }
 .card:hover .cardFooter 
 {
   display: block !important;
   position: absolute;
-  bottom: 0;
+  bottom: 0 !important;
   left: 0;
   right: 0;
+  z-index: 999999;
+  transform: scale(1);
    transform: translateY(90%) ;
    background-color:rgb(38, 38, 38);
-   border-radius: 5px;
-  z-index: 999999999; 
+   border-radius: 10px;
 
 }
+.CardBody
+{
+  
+}
+
 .title
 {
   color: #fff;
@@ -53,4 +69,8 @@
   .btn:hover
   {
    color: #fad860;;
+  }
+  .active{
+    color: black;
+    background: rgb(254, 254, 254);
   }
