@@ -6,49 +6,67 @@ import {
   CardFooter,
   Text,
   Image,
-  Box,
-  Tag,
-  Wrap,
   Button,
   Badge,
   WrapItem,
   Spinner,
   Spacer,
-  Tooltip,
-  Flex,
 } from "@chakra-ui/react";
-import "../../App.css"
+import { BsColumnsGap } from "react-icons/bs";
+import { LuRows } from "react-icons/lu";
+
 import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Styles from "./Adventure.module.css";
+
+/*typeScript Api Array All*/
 interface DataFetchGames {
   id: number;
   name: string;
+  released: string;
   background_image: ImageData;
   to: string;
   slug: string;
+  genres: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
   added: number;
-  genres: Array;
-  short_screenshots: Array;
+  short_screenshots: [
+    {
+      id: number;
+      image: ImageData;
+    }
+  ];
   metacritic: number;
-  parent_platforms: Array;
+  parent_platforms: [
+    {
+      platform: {
+        id: number;
+        name: string;
+      };
+    }
+  ];
 }
 
-export default function Adventure() {
-  const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]);
-  const [DataGamesGenres, setDataGamesGenres] = useState<DataFetchGames[]>([]);
-  const [loading, setLoading] = useState<Boolean>(false);
-  const [MouseOver, setMouseOver] = useState<String>("d-none");
-  const [MouseOut, setMouseOut] = useState<String>("d-flex");
+export default function Action() {
+  const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]); //set data API action
+  const [loading, setLoading] = useState<Boolean>(false); // set loading
+  const [MouseOver, setMouseOver] = useState<String>("d-none"); //control Show or hide CardFooter
+  const [MouseOut, setMouseOut] = useState<String>("d-flex"); //control Show or hide CardFooter
+  const [switchColumns, setSwitchColumns] = useState<string>("true"); // set setSwitchColumns
   const [activeItem, setActiveItem] = useState<Number>();
   const [activeIndex, setActiveIndex] = useState(0);
 
+  // handleItemClick
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
-
+  // call fetchGames to fetch API games
   const fetchGames = async () => {
     setLoading(true);
     try {
@@ -67,33 +85,30 @@ export default function Adventure() {
       console.error("Error fetching data:", error);
     }
   };
-
-  const CustomCard = React.forwardRef(({ children, ...rest }, ref) => (
-    <Box p="1">
-      <Tag ref={ref} {...rest}>
-        {children}
-      </Tag>
-    </Box>
-  ));
+  // handleSlideChange slide Image
   const handleSlideChange = (index) => {
     setActiveIndex(index);
   };
-  // Call the function
 
+  // Call the function
   useEffect(() => {
     fetchGames();
   }, []);
 
   return (
     <>
+      {/* is loading start  */}
       {loading === true ? (
         <div className="vh-100 d-flex align-items-center justify-content-center">
           <Spinner color="red.500" className="" size="xl" />
         </div>
       ) : (
+        /* is loading end  */
         <>
-          <h1 className="H1Heder">Adventure Games</h1>
-          <p className={`textHeder`}>
+          <Text color={"white"} fontSize={"5xl"}>
+            Adventure Games
+          </Text>
+          <Text color={"white"}>
             An adventure game is a genre in which the player performs as a
             protagonist. It is usually supported by puzzle-solving, gathering
             items, dialogues, and intervening goals. Adventure focus on story,
@@ -106,16 +121,65 @@ export default function Adventure() {
             make their choices. These games are still favorite among the users;
             independent developers start crowd-funding companies to raise money;
             the genre is celebrated on practically any platform.
-          </p>
+          </Text>
+          {/* control button Switch Display Columns */}
+          <WrapItem>
+            <Text marginTop={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
+              Display options:
+            </Text>
+            <Button
+              background={`hsla(0,0%,100%,.2)`}
+              paddingLeft={1}
+              onClick={() => setSwitchColumns("false")}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              rightIcon={<LuRows fontSize={"30px"} />}
+            />
+            <Button
+              background={`hsla(0,0%,100%,.2)`}
+              paddingLeft={1}
+              onClick={() => setSwitchColumns("true")}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              _active={{
+                background: "white",
+              }}
+              rightIcon={<BsColumnsGap fontSize={"30px"} />}
+            />
+          </WrapItem>
+          {/* control button Switch Display Columns */}
           <SimpleGrid
             spacing={4}
-            templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+            /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
+            templateColumns={
+              switchColumns === "false"
+                ? "repeat(auto-fill, minmax(50%, 1fr))"
+                : "repeat(auto-fill, minmax(300px, 1fr))"
+            }
+            padding={switchColumns === "false" ? 5 : 0}
+            width={switchColumns === "false" ? "50%" : ""}
+            margin={switchColumns === "false" ? "auto" : ""}
+            /* {
+            switchColumns === "true" ?( templateColumns="repeat(auto-fill, minmax(50%, 1fr))"
+            padding={5}
+            width={"50%"}
+            margin={"auto"}) : ''
+           } */
           >
             {dataGamesAction.map((item, index) => (
               <Link
-              to={`/actionId/${item.id}`}
+                to={`/detailsGames/${item.id}`}
                 style={{ textDecoration: "none" }}
                 key={item.id}
+                className={`${Styles.link}`}
                 onMouseOver={() => handleItemClick(index)}
                 onMouseOut={() => handleItemClick()}
               >
@@ -123,60 +187,71 @@ export default function Adventure() {
                   bg={"hsla(0, 0%, 100%, 0.07)"}
                   className={`${Styles.card}`}
                 >
-                  <Heading margin={0} borderRadius={2}>
+                  <Heading
+                    className={`${Styles.Heading} `}
+                    margin={0}
+                    borderRadius={2}
+                  >
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
+                    
+                      maxWidth="100%"
+                      minHeight="180px" // Ensure the image doesn't exceed its container's width
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
-                      } w=100 `}
+                      } ${Styles.zIndex}`}
                     />
                   </Heading>
                   <Heading
                     margin={0}
                     className={`${
                       index === activeItem ? MouseOut : MouseOver
-                    } `}
+                    } ${Styles.Heading} `}
                   >
                     <div>
-                      <div
-                        id={`carouselExampleIndicators_${item.id}`}
-                        className="carousel slide "
-                        data-ride="carousel"
-                      >
-                        <ol className="carousel-indicators">
-                          {item.short_screenshots.map((imag, index) => (
-                            <li
-                              key={imag.id}
-                              data-target={`#carouselExampleIndicators_${item.id}`}
-                              data-slide-to={index}
-                              onClick={() => handleSlideChange(index)}
-                            ></li>
-                          ))}
-                        </ol>
-                        <div className="carousel-inner">
-                          {item.short_screenshots.map((imag, index) => (
-                            <div
-                              key={index}
-                              className={`carousel-item  ${
-                                index === 0 ? "active" : ""
-                              }`}
-                            >
-                              <Image
-                                className="w-100"
-                                borderRadius={5}
-                                src={imag.image}
-                                alt={` ${index + 1}`}
-                              />
-                            </div>
-                          ))}
+                      <div>
+                        <div
+                          id={`carouselExampleIndicators_${item.id}`}
+                          className="carousel slide"
+                          data-ride="carousel"
+                        >
+                          <ol className="carousel-indicators">
+                            {item.short_screenshots.map((imag, index) => (
+                              <li
+                                key={imag.id}
+                                data-target={`#carouselExampleIndicators_${item.id}`}
+                                onMouseEnter={() => handleSlideChange(index)} // Change the photo on hover
+                              ></li>
+                            ))}
+                          </ol>
+                          <div className="carousel-inner">
+                            {item.short_screenshots.map((imag, index) => (
+                              <div
+                                key={index}
+                                className={`carousel-item  ${
+                                  index === activeIndex ? "active" : ""
+                                }`}
+                              >
+                                <Image
+                                 
+                                  maxWidth="100%"
+                                  minHeight="180px" // Ensure the image doesn't exceed its container's width
+                                  borderRadius={5}
+                                  className={`${Styles.zIndex}`}
+                                  src={`${imag.image}`}
+                                  alt={`${index + 1}`}
+                                />
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </Heading>
-                  <CardBody>
-                    <div className="d-flex">
+                  <CardBody className={`${Styles.CardBody}`}>
+                    <div className={`d-flex`}>
                       {item.parent_platforms.map((plat) => (
                         <div
                           className={` ${Styles.colorIcon}`}
@@ -229,20 +304,38 @@ export default function Adventure() {
                         }`}
                       ></i>
                     </Text>
-                    <Badge
-                      p={`3px`}
-                      borderRadius={5}
-                      color={"white"}
-                      background={`rgb(55, 55, 55)`}
-                      _hover={{
-                        bg: "white",
-                        color: "black",
-                      }}
-                    >
-                      <i className="fa-solid fa-plus p-1"></i>
+                    <div className="d-flex">
+                      <Badge
+                        p={`3px`}
+                        borderRadius={5}
+                        color={"white"}
+                        background={`rgb(55, 55, 55)`}
+                        _hover={{
+                          bg: "white",
+                          color: "black",
+                        }}
+                      >
+                        <i className="fa-solid fa-plus p-1"></i>
 
-                      <span className="p-1">{item.added}</span>
-                    </Badge>
+                        <span className="p-1">{item.added}</span>
+                      </Badge>
+                      <Badge
+                        className={`${
+                          index === activeItem ? MouseOut : MouseOver
+                        } `}
+                        borderRadius={5}
+                        marginLeft={2}
+                        fontSize={10}
+                        color={"white"}
+                        background={`rgb(55, 55, 55)`}
+                        _hover={{
+                          bg: "white",
+                          color: "black",
+                        }}
+                      >
+                        <i className="fa-solid fa-gift p-2"></i>
+                      </Badge>
+                    </div>
                   </CardBody>
                   <CardFooter className={`${Styles.cardFooter}`}>
                     <div className="d-flex">

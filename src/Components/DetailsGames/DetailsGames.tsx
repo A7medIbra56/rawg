@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -36,7 +36,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@chakra-ui/react";
-
+import { FcEmptyFilter } from "react-icons/fc";
 import { FaPlaystation, FaXbox, FaSteam } from "react-icons/fa";
 import { SiEpicgames } from "react-icons/si";
 
@@ -84,55 +84,70 @@ export default function DetailsGames() {
     }
   };
 
-
-
+  const handleClick = (event) => {
+    event.preventDefault();
+  };
   // Call the function
 
   useEffect(() => {
     fetchGames();
-
   }, []);
 
   return (
     <>
-      <Breadcrumb color={"white"} fontWeight="medium" fontSize="sm">
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            opacity={0.5}
-            _hover={{
-              opacity: 1,
-              color: "white",
-            }}
-            href="#"
-          >
-            Home
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            opacity={0.5}
-            _hover={{
-              opacity: 1,
-              color: "white",
-            }}
-            href="#"
-          >
-            About
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">{dataGamesAction.name}</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+      <Box
+        backgroundImage={`url(${dataGamesAction.background_image})`}
+        backgroundSize="cover"
+        height="90vh"
+        position={"absolute"}
+        top={0}
+        bottom={0}
+        left={0}
+        right={0}
+        backgroundPosition="center"
+        backgroundRepeat="no-repeat"
+        borderRadius="md" // يمكنك تعيين حدة الزاوية حسب الحاجة
+        boxShadow="lg" // إضافة ظل لتحسين المظهر
+      >
+        <Flex
+          height="100%"
+          background="linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1))"
+          boxShadow="0px 100px 100px -5px rgba(0, 0, 0, 1)" // Adjust the values as needed
+        >
+          {/* Your content goes here */}
+        </Flex>
+      </Box>
 
       <Grid
-        backgroundImage={`url(${dataGamesAction.background_image})`}
         className={Styles.bgDetailsGames}
         templateColumns={["1fr", "repeat(2, 1fr)"]}
       >
-        <Box padding={3} className={`${Styles.bgDetailsGamesItem}`}>
+        <Box padding={4} className={`${Styles.bgDetailsGamesItem}`}>
+          <Breadcrumb color={"white"} fontWeight="medium" fontSize="sm">
+            <BreadcrumbItem>
+              <Link className={`${Styles.linkBread}`} to={"/action"}>
+                {" "}
+                HOME
+              </Link>
+            </BreadcrumbItem>
+
+            <BreadcrumbItem>
+          
+                <Link className={`${Styles.linkBread}`} to={"/action"}>
+                  {" "}
+                  GAMES
+                </Link>
+            
+            </BreadcrumbItem>
+
+            <BreadcrumbItem isCurrentPage>
+              < >
+                  {" "}
+                  {dataGamesAction.name}
+                </>
+            </BreadcrumbItem>
+          </Breadcrumb>
+
           <Flex>
             <div className={`${Styles.dataBarth}`}>
               {dataGamesAction.updated}
@@ -166,55 +181,39 @@ export default function DetailsGames() {
           <Text fontSize={"6xl"} fontWeight={"bold"} color={"white"}>
             {dataGamesAction.name}
           </Text>
-          <div className="progress" style={{ height: "40px" }}>
-            <div
-              className={`progress-bar ${Styles.progressGreen}`}
-              role="progressbar"
-              style={{ width: `${51.87}%` }}
-              aria-valuemax="100"
-            >
-              <i
-                className={`fa-solid fa-circle-exclamation ${Styles.exclamation}`}
-              ></i>
-            </div>
-            <div
-              className={`progress-bar ${Styles.progressGradient} `}
-              role="progressbar"
-              style={{ width: `${27.43}%` }}
-              aria-valuemax="100"
-            >
-              <i
-                className={`fa-solid fa-thumbs-up text-warning ${Styles.thumbs} `}
-              ></i>
-            </div>
-            <div
-              className={`progress-bar text-warning ${Styles.progressOreg} `}
-              role="progressbar"
-              style={{ width: `${10.44}%` }}
-              aria-valuemax="100"
-            >
-              <i
-                className={`fa-solid fa-face-meh text-warning ${Styles.thumbs}`}
-              ></i>
-            </div>
-            <div
-              className={`progress-bar ${Styles.progressRead} `}
-              role="progressbar"
-              style={{ width: `${10.25}%` }}
-              aria-valuemax="100"
-            >
-              <i
-                className={`fa-regular fa-face-grin-tongue-squint ${Styles.exclamation}`}
-              ></i>
-            </div>
-          </div>
+          <Flex className="progress" style={{ height: "50px" }}>
+            {dataGamesAction.ratings?.map((item, index) => (
+              <div
+                key={index}
+                className={`progress-bar ${
+                  item.title === "exceptional"
+                    ? Styles.progressGreen
+                    : item.title === "recommended"
+                    ? Styles.progressGradient
+                    : item.title === "meh"
+                    ? Styles.progressOreg
+                    : item.title === "skip"
+                    ? Styles.progressRead
+                    : ""
+                }`}
+                role="progressbar"
+                style={{ width: `${item.percent}%` }}
+                aria-valuemax="100"
+              >
+                <FcEmptyFilter
+                  className={`fa-solid fa-circle-exclamation ${Styles.exclamation}`}
+                />
+              </div>
+            ))}
+          </Flex>
+
           <List color={"white"} padding={5}>
             <Flex>
               {dataGamesAction.ratings?.map((rat) => (
                 <ListItem key={rat.id} className={`${Styles.ListItem}`}>
                   {rat.title === "exceptional" ? (
                     <i
-                      className={`fa-solid fa-circle   ${Styles.circleGreen}`}
+                      className={`fa-solid fa-circle  ${Styles.circleGreen}`}
                     ></i>
                   ) : rat.title === "recommended" ? (
                     <i
@@ -231,9 +230,8 @@ export default function DetailsGames() {
                   ) : (
                     ""
                   )}
-                  <span className="">
-                    {" "}
-                    {rat.title} <strong>{rat.count}</strong>{" "}
+                  <span className={`${Styles.RatTitle}`}>
+                    {rat.title} <strong>{rat.count}</strong>
                   </span>
                 </ListItem>
               ))}
@@ -247,8 +245,10 @@ export default function DetailsGames() {
           </Text>
         </Box>
         <Box padding={3} className={`${Styles.bgDetailsGamesItem}`}>
-          <img
-            className="w-100"
+          <Image
+            height="auto"
+            maxWidth="90%"
+            minHeight="100"
             src={`${dataGamesAction.background_image_additional}`}
             alt="000"
           />

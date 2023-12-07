@@ -6,21 +6,12 @@ import {
   CardFooter,
   Text,
   Image,
-  Box,
-  Tag,
-  Tab,
-  Tabs,
-  TabList,
-  Wrap,
   Button,
   Badge,
   WrapItem,
   Spinner,
   Spacer,
-  Tooltip,
-  Flex,
 } from "@chakra-ui/react";
-import { FaPlaystation, FaXbox, FaSteam } from "react-icons/fa";
 import { BsColumnsGap } from "react-icons/bs";
 import { LuRows } from "react-icons/lu";
 
@@ -29,37 +20,54 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Styles from "./Action.module.css";
+
+/*typeScript Api Array All*/
 interface DataFetchGames {
   id: number;
   name: string;
+  released:string;
   background_image: ImageData;
   to: string;
   slug: string;
+  genres: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
   added: number;
-  genres: Array;
-  short_screenshots: Array;
+  short_screenshots: [
+    {
+      id: number;
+      image: ImageData;
+    }
+  ];
   metacritic: number;
-  parent_platforms: Array;
+  parent_platforms: [
+    {
+      platform: {
+        id: number;
+        name: string;
+      };
+    }
+  ];
 }
 
 export default function Action() {
-  const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]);
-  const [loading, setLoading] = useState<Boolean>(false);
-  const [MouseOver, setMouseOver] = useState<String>("d-none");
-  const [MouseOut, setMouseOut] = useState<String>("d-flex");
-  const [switchColumns, setSwitchColumns] = useState<string>("true");
+  const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]); //set data API action
+  const [loading, setLoading] = useState<Boolean>(false); // set loading
+  const [MouseOver, setMouseOver] = useState<String>("d-none");//control Show or hide CardFooter 
+  const [MouseOut, setMouseOut] = useState<String>("d-flex");//control Show or hide CardFooter
+  const [switchColumns, setSwitchColumns] = useState<string>("true"); // set setSwitchColumns
   const [activeItem, setActiveItem] = useState<Number>();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const LinkItemsGenres = [
-    { name: "Action", Icon: "LuRows", to: "/action" },
-    { name: "Strategy", Icon: "BsColumnsGap", to: "/strategy" },
-  ];
 
+// handleItemClick 
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
-
+// call fetchGames to fetch API games
   const fetchGames = async () => {
     setLoading(true);
     try {
@@ -78,26 +86,28 @@ export default function Action() {
       console.error("Error fetching data:", error);
     }
   };
-
+// handleSlideChange slide Image
   const handleSlideChange = (index) => {
     setActiveIndex(index);
   };
-  // Call the function
 
+  // Call the function
   useEffect(() => {
     fetchGames();
   }, []);
 
   return (
     <>
+    {/* is loading start  */}
       {loading === true ? (
         <div className="vh-100 d-flex align-items-center justify-content-center">
           <Spinner color="red.500" className="" size="xl" />
         </div>
+        /* is loading end  */
       ) : (
         <>
-          <h1 className="H1Heder">Action Games</h1>
-          <p className={`textHeder`}>
+          <Text color={"white"} fontSize={"5xl"} >Action Games</Text>
+          <Text color={"white"}>
             The action game is a genre that includes fights, puzzles, and
             strategies emphasizing coordination and reaction. It includes a
             large variety of sub-genres like fighting, beat 'em ups, shooters,
@@ -113,7 +123,8 @@ export default function Action() {
             he has unique abilities and a longer health bar. Pong is one of the
             first action games, released in 1972; the latest include
             Battlefield, Assasin's Creed, Fortnite and Dark Souls.
-          </p>
+          </Text>
+          {/* control button Switch Display Columns */}
           <WrapItem>
             <Text marginTop={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
               Display options:
@@ -140,14 +151,13 @@ export default function Action() {
                 bg: "white",
                 color: "black",
               }}
-              _active={
-                {
-                  background:"white"
-                }
-              }
+              _active={{
+                background: "white",
+              }}
               rightIcon={<BsColumnsGap fontSize={"30px"} />}
             />
           </WrapItem>
+           {/* control button Switch Display Columns */}
           <SimpleGrid
             spacing={4}
             /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
@@ -171,6 +181,7 @@ export default function Action() {
                 to={`/detailsGames/${item.id}`}
                 style={{ textDecoration: "none" }}
                 key={item.id}
+                className={`${Styles.link}`}
                 onMouseOver={() => handleItemClick(index)}
                 onMouseOut={() => handleItemClick()}
               >
@@ -178,21 +189,24 @@ export default function Action() {
                   bg={"hsla(0, 0%, 100%, 0.07)"}
                   className={`${Styles.card}`}
                 >
-                  <Heading margin={0} borderRadius={2}>
+                  <Heading className={`${Styles.Heading} `} margin={0} borderRadius={2}>
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
+                      
+                      maxWidth="100%"
+                      minHeight="180px"  // Ensure the image doesn't exceed its container's width
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
-                      } w=100 `}
+                      } ${Styles.zIndex}`}
                     />
                   </Heading>
                   <Heading
                     margin={0}
                     className={`${
                       index === activeItem ? MouseOut : MouseOver
-                    } `}
+                    } ${Styles.Heading} `}
                   >
                     <div>
                       <div>
@@ -219,10 +233,13 @@ export default function Action() {
                                 }`}
                               >
                                 <Image
-                                  className="w-100"
+                                          
+                                  maxWidth="100%"
+                                  minHeight="180px"  // Ensure the image doesn't exceed its container's width
                                   borderRadius={5}
-                                  src={imag.image}
-                                  alt={` ${index + 1}`}
+                                  className={`${Styles.zIndex}`}
+                                  src={`${imag.image}`}
+                                  alt={`${index + 1}`}
                                 />
                               </div>
                             ))}
@@ -231,8 +248,8 @@ export default function Action() {
                       </div>
                     </div>
                   </Heading>
-                  <CardBody>
-                    <div className="d-flex">
+                  <CardBody className={`${Styles.CardBody}`}>
+                    <div className={`d-flex`}>
                       {item.parent_platforms.map((plat) => (
                         <div
                           className={` ${Styles.colorIcon}`}

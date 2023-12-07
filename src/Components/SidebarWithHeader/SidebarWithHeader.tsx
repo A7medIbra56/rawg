@@ -17,7 +17,7 @@ import {
   Box,
   CloseButton,
   Flex,
-  HStack,
+  Input ,
   VStack,
   Icon,
   useColorModeValue,
@@ -107,6 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <>
       <Box
+        className={styles.zIndex}
         transition="3s ease"
         borderRightColor={useColorModeValue("gray.200", "gray.700")}
         w={{ base: "full", md: 60 }}
@@ -121,11 +122,11 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             fontFamily="monospace"
             fontWeight="bold"
           >
-            RAWG GAMES
+            RAWG
           </Text>
 
           <CloseButton
-          bg={"white"}
+            bg={"white"}
             display={{ base: "flex", md: "none" }}
             onClick={onClose}
           />
@@ -179,7 +180,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 color="white"
                 cursor="pointer"
               >
-                <Image  width={7} pt={2} mr={3} src={`${item.Img}`} />
+                <Image width={7} pt={2} mr={3} src={`${item.Img}`} />
                 {item.name}
               </Flex>
             </Box>
@@ -195,6 +196,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     <Flex
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
+      className={styles.zIndex}
       height="20"
       alignItems="center"
       bg={useColorModeValue("#151515", "#151515")}
@@ -204,22 +206,40 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     >
       <IconButton
         display={{ base: "flex", md: "none" }}
+        className={styles.zIndex}
+        color={"white"}
         onClick={onOpen}
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
       />
+      <Input background={`hsla(0,0%,100%,.16)`} _hover={
+        {
+          background:"white",
+          borderColor:"black"
+        }
+      } borderRadius={"20px"} className={`m-1 ${styles.zIndex1}`} placeholder='Search' />
 
-      <h3 color={"white"}>RAWG</h3>
-
-     
+      <Text
+        color={"white"}
+        fontSize="3xl"
+        fontFamily="monospace"
+        fontWeight="bold"
+        className={`m-5 ${styles.zIndex1}`}
+      >
+        LOGIN
+      </Text>
     </Flex>
   );
 };
 const SidebarWithHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box  minH="100vh" bg={useColorModeValue("#151515", "#151515")}>
+    <Box
+      className={styles.zIndex}
+      minH="100vh"
+      bg={useColorModeValue("#151515", "#151515")}
+    >
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -230,14 +250,14 @@ const SidebarWithHeader = () => {
         returnFocusOnClose={true}
         onOverlayClick={onClose}
         colorScheme="white"
-        size="xs" 
+        size="xs"
       >
         <DrawerContent  bg={useColorModeValue("#151515", "#151515")}>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent className={styles.zIndex} onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav  onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="2">
         {/* Content */}
         <Routes>
