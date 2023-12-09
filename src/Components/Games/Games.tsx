@@ -7,10 +7,12 @@ import {
   Text,
   Image,
   Button,
+  Select,
   Badge,
   WrapItem,
   Spinner,
   Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import { BsColumnsGap } from "react-icons/bs";
 import { LuRows } from "react-icons/lu";
@@ -19,7 +21,7 @@ import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Styles from "./Puzzle.module.css";
+import Styles from "./Games.module.css";
 
 /*typeScript Api Array All*/
 interface DataFetchGames {
@@ -53,31 +55,30 @@ interface DataFetchGames {
   ];
 }
 
-export default function Puzzle() {
+export default function Games() {
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]); //set data API action
   const [loading, setLoading] = useState<Boolean>(false); // set loading
   const [MouseOver, setMouseOver] = useState<String>("d-none"); //control Show or hide CardFooter
   const [MouseOut, setMouseOut] = useState<String>("d-flex"); //control Show or hide CardFooter
   const [switchColumns, setSwitchColumns] = useState<string>("true"); // set setSwitchColumns
   const [activeItem, setActiveItem] = useState<Number>();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<Number>(0);
+  const [ReleaseDate, setReleaseDate] = useState<string>("2023");
+  const [Platforms, setPlatforms] = useState<string>("1,2,3");
 
   // handleItemClick
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
   // call fetchGames to fetch API games
-  const fetchGames = async () => {
+  const fetchGames = async (uPNumber, plat) => {
     setLoading(true);
     try {
       const { data } = await Axios.get("https://api.rawg.io/api/games", {
         params: {
           key: "de893af8a0034c2da3577be32746abc8",
-          genres: "puzzle",
         },
       });
-
-      console.log(data.results);
       setDataGamesAction(data.results);
       setLoading(false);
     } catch (error) {
@@ -92,8 +93,8 @@ export default function Puzzle() {
 
   // Call the function
   useEffect(() => {
-    fetchGames();
-  }, []);
+    fetchGames(ReleaseDate, Platforms);
+  }, [ReleaseDate, Platforms]);
 
   return (
     <>
@@ -105,9 +106,10 @@ export default function Puzzle() {
       ) : (
         /* is loading end  */
         <>
-          <Text color={"white"} fontSize={"5xl"}>
-            Puzzle Games
+          <Text color={"white"} fontSize={"5xl"}>Games
           </Text>
+          <Flex></Flex>
+
           <Text color={"white"}>
             The action game is a genre that includes fights, puzzles, and
             strategies emphasizing coordination and reaction. It includes a
@@ -125,8 +127,8 @@ export default function Puzzle() {
             first action games, released in 1972; the latest include
             Battlefield, Assasin's Creed, Fortnite and Dark Souls.
           </Text>
-          {/* control button Switch Display Columns */}
-          <WrapItem>
+
+          <WrapItem className={`${Styles.Display} `}>
             <Text marginTop={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
               Display options:
             </Text>
@@ -164,18 +166,19 @@ export default function Puzzle() {
             /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
             templateColumns={
               switchColumns === "false"
-                ? "repeat(auto-fill, minmax(50%, 1fr))"
+                ? ""
                 : "repeat(auto-fill, minmax(300px, 1fr))"
             }
             padding={switchColumns === "false" ? 5 : 0}
-            width={switchColumns === "false" ? "50%" : ""}
+            width={switchColumns === "false" ? "70%" : ""}
+            height={switchColumns === "false" ? "40%" : ""}
             margin={switchColumns === "false" ? "auto" : ""}
             /* {
-            switchColumns === "true" ?( templateColumns="repeat(auto-fill, minmax(50%, 1fr))"
-            padding={5}
-            width={"50%"}
-            margin={"auto"}) : ''
-           } */
+              switchColumns === "true" ?( templateColumns="repeat(auto-fill, minmax(50%, 1fr))"
+              padding={5}
+              width={"50%"}
+              margin={"auto"}) : ''
+             } */
           >
             {dataGamesAction.map((item, index) => (
               <Link
@@ -186,10 +189,7 @@ export default function Puzzle() {
                 onMouseOver={() => handleItemClick(index)}
                 onMouseOut={() => handleItemClick()}
               >
-                <Card
-                  bg={"hsla(0, 0%, 100%, 0.07)"}
-                  className={`${Styles.card}`}
-                >
+                <Card bg={"rgb(30, 30, 30)"} className={`${Styles.card}`}>
                   <Heading
                     className={`${Styles.Heading} `}
                     margin={0}
@@ -198,7 +198,6 @@ export default function Puzzle() {
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
-                     
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
@@ -236,9 +235,8 @@ export default function Puzzle() {
                                 }`}
                               >
                                 <Image
-                                  // Ensure the image doesn't exceed its container's width
                                   borderRadius={5}
-                                  className={`${Styles.ImageCard}`}
+                                  className={`${Styles.zIndex}  ${Styles.ImageCard}`}
                                   src={`${imag.image}`}
                                   alt={`${index + 1}`}
                                 />
@@ -288,13 +286,13 @@ export default function Puzzle() {
                       <Spacer />
                       <div className={`${Styles.badge}`}>
                         <span className={`${Styles.TextNumber}`}>
-                          {item.metacritic}
+                          {item.metacritic === null ? 0 : item.metacritic}
                         </span>
                       </div>
                     </div>
 
                     <Text className={`${Styles.title}`}>
-                     <p> {item.name}</p>
+                      {item.name}
                       <i
                         className={`${
                           item.metacritic >= 90

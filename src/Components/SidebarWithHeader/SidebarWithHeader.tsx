@@ -8,7 +8,7 @@ import download4 from "../../imga/download (4).png";
 import download5 from "../../imga/download (5).png";
 import download6 from "../../imga/download (6).png";
 import download7 from "../../imga/download (7).png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 
 import {
@@ -17,8 +17,8 @@ import {
   Box,
   CloseButton,
   Flex,
-  Input ,
-  VStack,
+  Input,
+  InputLeftAddon,
   Icon,
   useColorModeValue,
   Text,
@@ -27,24 +27,15 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
+  InputGroup,
   Image,
   Spacer,
 } from "@chakra-ui/react";
 import {
-  FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
-  FiBell,
-  FiChevronDown,
 } from "react-icons/fi";
+import { MdLastPage ,MdSkipNext ,MdNewReleases   } from "react-icons/md";
 import { IconType } from "react-icons";
 import { useState } from "react";
 import Strategy from "../Strategy/Strategy.tsx";
@@ -56,11 +47,19 @@ import Racing from "../Racing/Racing.tsx";
 import RPG from "../RPG/RPG.tsx";
 import Shooter from "../Shooter/Shooter.tsx";
 import DetailsGames from "../DetailsGames/DetailsGames.tsx";
+import Search from "../Search/Search.tsx";
+import Games from "../Games/Games.tsx";
+import Home from "../Home/Home.tsx";
+import Lastdays from "../Lastdays/Lastdays.tsx";
+import Thisweek from "../../Components/Thisweek/Thisweek.tsx";
+import Nextweek from "../../Components/Nextweek/Nextweek.tsx";
+import Releasecalendar from "../Releasecalendar/Releasecalendar.tsx";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
   titel?: string;
+  to: string;
 }
 interface LinkItemGenresProps {
   name: string;
@@ -81,10 +80,10 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Last 30 days", icon: FiHome },
-  { name: "This week", icon: FiTrendingUp },
-  { name: "Next week", icon: FiCompass },
-  { name: "Release calendar", icon: FiStar },
+  { name: "Last 30 days", icon: MdLastPage  , to: "/lastdays" },
+  { name: "This week", icon: FiTrendingUp,to: "/thisweek" },
+  { name: "Next week", icon: MdSkipNext ,to: "/nextweek" },
+  { name: "Release calendar", icon: MdNewReleases  ,to: "/releasecalendar" },
 ];
 
 const LinkItemsGenres: Array<LinkItemGenresProps> = [
@@ -131,18 +130,30 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             onClick={onClose}
           />
         </Flex>
-
-        <Box ml={6} pt={2} fontSize={"3xl"} color={"white"}>
-          Reviews
-        </Box>
+        <Link className="text-decoration-none" to={"/home"}>
+          <Box   ml={6}
+            pt={2}
+            fontSize={"3xl"}
+            color={"white"}
+            _hover={{
+              opacity: 0.5,
+              direction: "none",
+            }}>
+            Home
+          </Box>
+        </Link>
 
         {LinkItems.map((link, index1) => (
+          <Link   key={link.name}
+          className="text-decoration-none"
+          to={`${link.to}`}>
           <Box key={link.name}>
             <Flex
               align="center"
               mx="6"
               role="group"
               color="white"
+             
               cursor="pointer"
               onClick={() => handleItemClick(index1)}
             >
@@ -162,10 +173,24 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
               {link.name}
             </Flex>
           </Box>
+          </Link>
+          
         ))}
-        <Text ml={6} pt={2} fontSize={"3xl"} color={"white"}>
-          Genres
-        </Text>
+        <Link className={`text-decoration-none ${styles.LinkText}`} to={"/games"}>
+          <Text
+            ml={6}
+            pt={2}
+            fontSize={"3xl"}
+            color={"white"}
+            _hover={{
+              opacity: 0.5,
+              direction: "none",
+            }}
+          >
+            GAMES
+          </Text>
+        </Link>
+
         {LinkItemsGenres.map((item) => (
           <Link
             style={{ textDecoration: "none" }}
@@ -192,6 +217,30 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  let [searchItem, setSearchItem] = useState("");
+  let Navigate = useNavigate();
+  function getSearch(e) {
+    let mySearchItem = searchItem;
+    mySearchItem = e.value;
+    setSearchItem(mySearchItem);
+  }
+
+  const handleNavigate: any = (searchItemUp) => {
+    if (searchItemUp === ``) {
+    } else {
+      Navigate(`/search/${searchItemUp}`);
+    }
+  };
+
+  const handleSearch = () => {
+    handleNavigate(searchItem);
+  };
+  const handleEnterPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -213,19 +262,30 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      <Input background={`hsla(0,0%,100%,.16)`} _hover={
-        {
-          background:"white",
-          borderColor:"black"
-        }
-      } borderRadius={"20px"} className={`m-1 ${styles.zIndex1}`} placeholder='Search' />
 
+      <InputGroup className={`${styles.zIndex1}`}>
+        <Input
+          name="search"
+          background={`hsla(0,0%,100%,.16)`}
+          border={"0px"}
+          borderRadius={"40px"}
+          _hover={{
+            background: "white",
+            borderColor: "black",
+          }}
+          placeholder="Search"
+          onChange={(e) => getSearch(e.target)}
+          onKeyDown={handleEnterPress}
+          type="text"
+          className={`${styles.zIndex1} ${styles.InputSearch}`}
+        />
+      </InputGroup>
       <Text
         color={"white"}
-        fontSize="3xl"
+        fontSize="xl"
         fontFamily="monospace"
         fontWeight="bold"
-        className={`m-5 ${styles.zIndex1}`}
+        className={`m-1 ${styles.zIndex1}`}
       >
         LOGIN
       </Text>
@@ -234,6 +294,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 };
 const SidebarWithHeader = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       className={styles.zIndex}
@@ -252,7 +313,7 @@ const SidebarWithHeader = () => {
         colorScheme="white"
         size="xs"
       >
-        <DrawerContent  bg={useColorModeValue("#151515", "#151515")}>
+        <DrawerContent bg={useColorModeValue("#151515", "#151515")}>
           <SidebarContent className={styles.zIndex} onClose={onClose} />
         </DrawerContent>
       </Drawer>
@@ -262,9 +323,18 @@ const SidebarWithHeader = () => {
         {/* Content */}
         <Routes>
           {/*      <Route path="/action" exact component={Strategy} /> */}
-          <Route path="/" element={<Action />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/lastdays" element={<Lastdays />} />
+          <Route path="/thisweek" element={<Thisweek />} />
+          <Route path="/nextweek" element={<Nextweek />} />
+          <Route path="/releasecalendar" element={<Releasecalendar />} />
           <Route path="/strategy" element={<Strategy />} />
           <Route path="/action" element={<Action />} />
+          <Route path="/search" element={<Search />}>
+            <Route path=":query" element={<DetailsGames />}></Route>
+          </Route>
           <Route path="/detailsGames" element={<DetailsGames />}>
             <Route path=":id" element={<DetailsGames />}></Route>
           </Route>

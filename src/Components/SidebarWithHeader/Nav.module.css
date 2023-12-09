@@ -20,7 +20,11 @@
 
 }
 /* Your styles.module.css */
+.InputSearch
+{
+  width: 50%;
 
+}
 .NavItemStyles {
 
   }
@@ -44,4 +48,7 @@
     text-decoration: none;
     color: black;
     background: rgb(254, 254, 254);
+  }
+  .LinkText{
+    text-decoration: none;
   }

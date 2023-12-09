@@ -52,30 +52,48 @@ export default function DetailsGames() {
     slug: string;
     description_raw: String;
     added: number;
-    alternative_names: Array;
-    publishers: Array;
-    genres: Array;
-    stores: Array;
-    short_screenshots: Array;
+    updated:any;
+    stores: 
+    [
+     { store:
+      {
+        id:number
+        name:string
+      }}
+    ];
     metacritic: number;
-    parent_platforms: Array;
-    platforms: Array;
-    ratings: Array;
+    parent_platforms: 
+    [
+      {platform:
+      {
+        id:number
+        name:string
+      }}
+    ];
+  
+    ratings: [
+      {title:string
+        id:number
+        percent:number
+        count:number
+      }
+    ];
   }
 
   const { id } = useParams();
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames>({});
+  const [loading, setLoading] = useState<Boolean>(false);
   const fetchGames = async () => {
     /*  setLoading(true); */
     try {
+      setLoading(true);
       const { data } = await Axios.get(`https://api.rawg.io/api/games/${id}`, {
         params: {
           key: "de893af8a0034c2da3577be32746abc8",
           genres: "action",
         },
       });
-
-      console.log(data);
+      setLoading(false);
       setDataGamesAction(data);
       /*    setLoading(false); */
     } catch (error) {
@@ -95,7 +113,12 @@ export default function DetailsGames() {
 
   return (
     <>
-      <Box
+     {loading === true ? (
+        <div className="vh-100 d-flex align-items-center justify-content-center">
+          <Spinner color="red.500" className="" size="xl" />
+        </div>
+      ): <>
+        <Box
         backgroundImage={`url(${dataGamesAction.background_image})`}
         backgroundSize="cover"
         height="90vh"
@@ -117,7 +140,6 @@ export default function DetailsGames() {
           {/* Your content goes here */}
         </Flex>
       </Box>
-
       <Grid
         className={Styles.bgDetailsGames}
         templateColumns={["1fr", "repeat(2, 1fr)"]}
@@ -125,16 +147,16 @@ export default function DetailsGames() {
         <Box padding={4} className={`${Styles.bgDetailsGamesItem}`}>
           <Breadcrumb color={"white"} fontWeight="medium" fontSize="sm">
             <BreadcrumbItem>
-              <Link className={`${Styles.linkBread}`} to={"/action"}>
-                {" "}
+              <Link className={`${Styles.linkBread}`} to={"/home"}>
+          
                 HOME
               </Link>
             </BreadcrumbItem>
 
             <BreadcrumbItem>
           
-                <Link className={`${Styles.linkBread}`} to={"/action"}>
-                  {" "}
+                <Link className={`${Styles.linkBread}`} to={"/games"}>
+                
                   GAMES
                 </Link>
             
@@ -142,7 +164,7 @@ export default function DetailsGames() {
 
             <BreadcrumbItem isCurrentPage>
               < >
-                  {" "}
+          
                   {dataGamesAction.name}
                 </>
             </BreadcrumbItem>
@@ -181,10 +203,10 @@ export default function DetailsGames() {
           <Text fontSize={"6xl"} fontWeight={"bold"} color={"white"}>
             {dataGamesAction.name}
           </Text>
-          <Flex className="progress" style={{ height: "50px" }}>
-            {dataGamesAction.ratings?.map((item, index) => (
-              <div
-                key={index}
+          <Flex className={`progress ${Styles.WProgress}`} style={{  height: "50px" }}>
+            {dataGamesAction.ratings?.map((item,) => (
+              (<div 
+                key={item.id}
                 className={`progress-bar ${
                   item.title === "exceptional"
                     ? Styles.progressGreen
@@ -195,7 +217,7 @@ export default function DetailsGames() {
                     : item.title === "skip"
                     ? Styles.progressRead
                     : ""
-                }`}
+                } `}
                 role="progressbar"
                 style={{ width: `${item.percent}%` }}
                 aria-valuemax="100"
@@ -203,7 +225,7 @@ export default function DetailsGames() {
                 <FcEmptyFilter
                   className={`fa-solid fa-circle-exclamation ${Styles.exclamation}`}
                 />
-              </div>
+              </div>)
             ))}
           </Flex>
 
@@ -314,6 +336,9 @@ export default function DetailsGames() {
           </Wrap>
         </Box>
       </Grid>
+      </>
+}
+    
     </>
   );
 }

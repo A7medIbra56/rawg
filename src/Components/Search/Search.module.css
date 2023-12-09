@@ -4,7 +4,6 @@
   z-index: 9999;
 }
 .card {
-  
   position: relative;
   transition: all 0.3s;
   margin: 2px;
@@ -60,6 +59,18 @@
 }
 .ImageCard {
   width: 100%;
+  min-height: 200px;
+}
+
+@media (max-width: 938px) {
+  /* Adjust styles for screens wider than 768px */
+  .Display {
+    display: none !important;
+  }
+}
+
+.ImageCard {
+  width: 100%;
  min-height:200px;
 }
 
@@ -70,4 +81,5 @@
 { display: none !important;
    }
   }
+
 

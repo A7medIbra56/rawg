@@ -195,13 +195,12 @@ export default function Action() {
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
-                    
                       maxWidth="100%"
                       minHeight="180px" // Ensure the image doesn't exceed its container's width
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
-                      } ${Styles.zIndex}`}
+                      } ${Styles.ImageCard}`}
                     />
                   </Heading>
                   <Heading
@@ -235,11 +234,10 @@ export default function Action() {
                                 }`}
                               >
                                 <Image
-                                 
                                   maxWidth="100%"
                                   minHeight="180px" // Ensure the image doesn't exceed its container's width
                                   borderRadius={5}
-                                  className={`${Styles.zIndex}`}
+                                  className={`${Styles.ImageCard}`}
                                   src={`${imag.image}`}
                                   alt={`${index + 1}`}
                                 />
@@ -295,7 +293,7 @@ export default function Action() {
                     </div>
 
                     <Text className={`${Styles.title}`}>
-                      {item.name}{" "}
+                      <p>{item.name}</p>
                       <i
                         className={`${
                           item.metacritic >= 90
