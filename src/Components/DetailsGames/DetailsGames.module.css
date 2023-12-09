@@ -113,3 +113,14 @@
 {
   color: #fff;
 }
+
+/* Styles for screens wider than 768px */
+
+
+/* Additional styles for screens smaller than or equal to 938px */
+@media (max-width: 750px) {
+  .WProgress {
+    width: 90%;
+
+  }
+}

@@ -7,10 +7,12 @@ import {
   Text,
   Image,
   Button,
+  Select,
   Badge,
   WrapItem,
   Spinner,
   Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import { BsColumnsGap } from "react-icons/bs";
 import { LuRows } from "react-icons/lu";
@@ -25,7 +27,7 @@ import Styles from "./Action.module.css";
 interface DataFetchGames {
   id: number;
   name: string;
-  released:string;
+  released: string;
   background_image: ImageData;
   to: string;
   slug: string;
@@ -56,29 +58,30 @@ interface DataFetchGames {
 export default function Action() {
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]); //set data API action
   const [loading, setLoading] = useState<Boolean>(false); // set loading
-  const [MouseOver, setMouseOver] = useState<String>("d-none");//control Show or hide CardFooter 
-  const [MouseOut, setMouseOut] = useState<String>("d-flex");//control Show or hide CardFooter
+  const [MouseOver, setMouseOver] = useState<String>("d-none"); //control Show or hide CardFooter
+  const [MouseOut, setMouseOut] = useState<String>("d-flex"); //control Show or hide CardFooter
   const [switchColumns, setSwitchColumns] = useState<string>("true"); // set setSwitchColumns
   const [activeItem, setActiveItem] = useState<Number>();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<Number>(0);
+  const [ReleaseDate, setReleaseDate] = useState<string>("2023");
+  const [Platforms, setPlatforms] = useState<string>("1,2,3");
 
-
-// handleItemClick 
+  // handleItemClick
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
-// call fetchGames to fetch API games
-  const fetchGames = async () => {
+  // call fetchGames to fetch API games
+  const fetchGames = async (uPNumber, plat) => {
     setLoading(true);
     try {
       const { data } = await Axios.get("https://api.rawg.io/api/games", {
         params: {
           key: "de893af8a0034c2da3577be32746abc8",
           genres: "action",
+          dates: `2000-12-31,${uPNumber}-12-31`,
+          platforms: `${plat}`,
         },
       });
-
-      console.log(data.results);
       setDataGamesAction(data.results);
       setLoading(false);
     } catch (error) {
@@ -86,27 +89,74 @@ export default function Action() {
       console.error("Error fetching data:", error);
     }
   };
-// handleSlideChange slide Image
+  // handleSlideChange slide Image
   const handleSlideChange = (index) => {
     setActiveIndex(index);
   };
 
   // Call the function
   useEffect(() => {
-    fetchGames();
-  }, []);
+    fetchGames(ReleaseDate, Platforms);
+  }, [ReleaseDate, Platforms]);
 
   return (
     <>
-    {/* is loading start  */}
+      {/* is loading start  */}
       {loading === true ? (
         <div className="vh-100 d-flex align-items-center justify-content-center">
           <Spinner color="red.500" className="" size="xl" />
         </div>
-        /* is loading end  */
       ) : (
+        /* is loading end  */
         <>
-          <Text color={"white"} fontSize={"5xl"} >Action Games</Text>
+          <Text color={"white"} fontSize={"5xl"}>
+            Action Games
+          </Text>
+          <Flex>
+            <Select
+              width={"150px"}
+              background={"hsla(0,0%,100%,.1)"}
+              border={0}
+              borderRadius={"20px"}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              _active={{
+                background: "white",
+              }}
+              onChange={(e) => setReleaseDate(e.target.value)}
+              placeholder="Release date"
+            >
+              <option value="2023">2023</option>
+              <option value="2014">2022-2023</option>
+              <option value="2010">2021-2023</option>
+            </Select>
+            <Select
+              width={"150px"}
+              background={"hsla(0,0%,100%,.1)"}
+              border={0}
+              borderRadius={"20px"}
+              margin={2}
+              color={"hsla(0,0%,90%,.8)"}
+              _hover={{
+                bg: "white",
+                color: "black",
+              }}
+              _active={{
+                background: "white",
+              }}
+              onChange={(e) => setPlatforms(e.target.value)}
+              placeholder=" Platforms"
+            >
+              <option value="2,2,3">Pc</option>
+              <option value="3,2,3">IOS</option>
+              <option value="4,2,3">XBOX</option>
+            </Select>
+          </Flex>
+
           <Text color={"white"}>
             The action game is a genre that includes fights, puzzles, and
             strategies emphasizing coordination and reaction. It includes a
@@ -124,8 +174,8 @@ export default function Action() {
             first action games, released in 1972; the latest include
             Battlefield, Assasin's Creed, Fortnite and Dark Souls.
           </Text>
-          {/* control button Switch Display Columns */}
-          <WrapItem>
+
+          <WrapItem className={`${Styles.Display} `}>
             <Text marginTop={3} fontSize={"sm"} color={"hsla(0,0%,90%,.8)"}>
               Display options:
             </Text>
@@ -157,17 +207,18 @@ export default function Action() {
               rightIcon={<BsColumnsGap fontSize={"30px"} />}
             />
           </WrapItem>
-           {/* control button Switch Display Columns */}
+          {/* control button Switch Display Columns */}
           <SimpleGrid
             spacing={4}
             /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
             templateColumns={
               switchColumns === "false"
-                ? "repeat(auto-fill, minmax(50%, 1fr))"
+                ? ""
                 : "repeat(auto-fill, minmax(300px, 1fr))"
             }
             padding={switchColumns === "false" ? 5 : 0}
-            width={switchColumns === "false" ? "50%" : ""}
+            width={switchColumns === "false" ? "70%" : ""}
+            height={switchColumns === "false" ? "40%" : ""}
             margin={switchColumns === "false" ? "auto" : ""}
             /* {
             switchColumns === "true" ?( templateColumns="repeat(auto-fill, minmax(50%, 1fr))"
@@ -185,21 +236,19 @@ export default function Action() {
                 onMouseOver={() => handleItemClick(index)}
                 onMouseOut={() => handleItemClick()}
               >
-                <Card
-                  bg={"hsla(0, 0%, 100%, 0.07)"}
-                  className={`${Styles.card}`}
-                >
-                  <Heading className={`${Styles.Heading} `} margin={0} borderRadius={2}>
+                <Card bg={"rgb(30, 30, 30)"} className={`${Styles.card}`}>
+                  <Heading
+                    className={`${Styles.Heading} `}
+                    margin={0}
+                    borderRadius={2}
+                  >
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
-                      
-                      maxWidth="100%"
-                      minHeight="180px"  // Ensure the image doesn't exceed its container's width
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
-                      } ${Styles.zIndex}`}
+                      } ${Styles.ImageCard}`}
                     />
                   </Heading>
                   <Heading
@@ -233,11 +282,8 @@ export default function Action() {
                                 }`}
                               >
                                 <Image
-                                          
-                                  maxWidth="100%"
-                                  minHeight="180px"  // Ensure the image doesn't exceed its container's width
                                   borderRadius={5}
-                                  className={`${Styles.zIndex}`}
+                                  className={`${Styles.zIndex}  ${Styles.ImageCard}`}
                                   src={`${imag.image}`}
                                   alt={`${index + 1}`}
                                 />
@@ -287,13 +333,13 @@ export default function Action() {
                       <Spacer />
                       <div className={`${Styles.badge}`}>
                         <span className={`${Styles.TextNumber}`}>
-                          {item.metacritic}
+                          {item.metacritic === null ? 0 : item.metacritic}
                         </span>
                       </div>
                     </div>
 
                     <Text className={`${Styles.title}`}>
-                      {item.name}{" "}
+                      {item.name}
                       <i
                         className={`${
                           item.metacritic >= 90
