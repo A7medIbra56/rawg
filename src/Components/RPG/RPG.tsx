@@ -25,7 +25,7 @@ import Styles from "./RPG.module.css";
 interface DataFetchGames {
   id: number;
   name: string;
-  released:string;
+  released: string;
   background_image: ImageData;
   to: string;
   slug: string;
@@ -56,18 +56,17 @@ interface DataFetchGames {
 export default function RPG() {
   const [dataGamesAction, setDataGamesAction] = useState<DataFetchGames[]>([]); //set data API action
   const [loading, setLoading] = useState<Boolean>(false); // set loading
-  const [MouseOver, setMouseOver] = useState<String>("d-none");//control Show or hide CardFooter 
-  const [MouseOut, setMouseOut] = useState<String>("d-flex");//control Show or hide CardFooter
+  const [MouseOver, setMouseOver] = useState<String>("d-none"); //control Show or hide CardFooter
+  const [MouseOut, setMouseOut] = useState<String>("d-flex"); //control Show or hide CardFooter
   const [switchColumns, setSwitchColumns] = useState<string>("true"); // set setSwitchColumns
   const [activeItem, setActiveItem] = useState<Number>();
   const [activeIndex, setActiveIndex] = useState(0);
 
-
-// handleItemClick 
+  // handleItemClick
   const handleItemClick = (index?: Number) => {
     setActiveItem(index);
   };
-// call fetchGames to fetch API games
+  // call fetchGames to fetch API games
   const fetchGames = async () => {
     setLoading(true);
     try {
@@ -86,7 +85,7 @@ export default function RPG() {
       console.error("Error fetching data:", error);
     }
   };
-// handleSlideChange slide Image
+  // handleSlideChange slide Image
   const handleSlideChange = (index) => {
     setActiveIndex(index);
   };
@@ -98,15 +97,17 @@ export default function RPG() {
 
   return (
     <>
-    {/* is loading start  */}
+      {/* is loading start  */}
       {loading === true ? (
         <div className="vh-100 d-flex align-items-center justify-content-center">
           <Spinner color="red.500" className="" size="xl" />
         </div>
-        /* is loading end  */
       ) : (
+        /* is loading end  */
         <>
-          <Text color={"white"} fontSize={"5xl"} >RGP Games</Text>
+          <Text color={"white"} fontSize={"5xl"}>
+            RGP Games
+          </Text>
           <Text color={"white"}>
             The action game is a genre that includes fights, puzzles, and
             strategies emphasizing coordination and reaction. It includes a
@@ -157,7 +158,7 @@ export default function RPG() {
               rightIcon={<BsColumnsGap fontSize={"30px"} />}
             />
           </WrapItem>
-           {/* control button Switch Display Columns */}
+          {/* control button Switch Display Columns */}
           <SimpleGrid
             spacing={4}
             /*  templateColumns="repeat(auto-fill, minmax(300px, 1fr))" */
@@ -189,13 +190,16 @@ export default function RPG() {
                   bg={"hsla(0, 0%, 100%, 0.07)"}
                   className={`${Styles.card}`}
                 >
-                  <Heading className={`${Styles.Heading} `} margin={0} borderRadius={2}>
+                  <Heading
+                    className={`${Styles.Heading} `}
+                    margin={0}
+                    borderRadius={2}
+                  >
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
-                      
                       maxWidth="100%"
-                      minHeight="180px"  // Ensure the image doesn't exceed its container's width
+                      minHeight="180px" // Ensure the image doesn't exceed its container's width
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
@@ -233,9 +237,8 @@ export default function RPG() {
                                 }`}
                               >
                                 <Image
-                                          
                                   maxWidth="100%"
-                                  minHeight="180px"  // Ensure the image doesn't exceed its container's width
+                                  minHeight="180px" // Ensure the image doesn't exceed its container's width
                                   borderRadius={5}
                                   className={`${Styles.zIndex}`}
                                   src={`${imag.image}`}

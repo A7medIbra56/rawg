@@ -71,15 +71,12 @@
 
 .ImageCard {
   width: 100%;
- min-height:200px;
+  min-height: 200px;
 }
 
-
 @media (max-width: 938px) {
-    /* Adjust styles for screens wider than 768px */
-    .Display
-{ display: none !important;
-   }
+  /* Adjust styles for screens wider than 768px */
+  .Display {
+    display: none !important;
   }
-
-
+}

@@ -1,9 +1,7 @@
-.zIndex
-{
+.zIndex {
   z-index: 999999999999;
 }
-.zIndex1
-{
+.zIndex1 {
   z-index: 99;
 }
 .PaddingIcon {
@@ -17,38 +15,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 /* Your styles.module.css */
-.InputSearch
-{
+.InputSearch {
   width: 50%;
-
 }
 .NavItemStyles {
-
-  }
-  .PaddingIcon:hover {
-    /* Styles applied to the container when hovering */
-    background-color: beige;
-
-  }
-  .PaddingIcon:hover .icon{
-    background-color: beige;
-    color: black !important;
-    transition: background-color 0.5s ease;
-  }
+}
+.PaddingIcon:hover {
+  /* Styles applied to the container when hovering */
+  background-color: beige;
+}
+.PaddingIcon:hover .icon {
+  background-color: beige;
+  color: black !important;
+  transition: background-color 0.5s ease;
+}
 
 .active {
-    text-decoration: none;
-    color: black;
-    background: rgb(254, 254, 254);
-  }
-  .active .icon{
-    text-decoration: none;
-    color: black;
-    background: rgb(254, 254, 254);
-  }
-  .LinkText{
-    text-decoration: none;
-  }
+  text-decoration: none;
+  color: black;
+  background: rgb(254, 254, 254);
+}
+.active .icon {
+  text-decoration: none;
+  color: black;
+  background: rgb(254, 254, 254);
+}
+.LinkText {
+  text-decoration: none;
+}

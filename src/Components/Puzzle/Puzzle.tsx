@@ -198,7 +198,6 @@ export default function Puzzle() {
                     <Image
                       src={`${item.background_image}`}
                       alt=".."
-                     
                       borderRadius={5}
                       className={`${
                         index === activeItem ? MouseOver : MouseOut
@@ -294,7 +293,7 @@ export default function Puzzle() {
                     </div>
 
                     <Text className={`${Styles.title}`}>
-                     <p> {item.name}</p>
+                      <p> {item.name}</p>
                       <i
                         className={`${
                           item.metacritic >= 90
