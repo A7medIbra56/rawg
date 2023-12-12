@@ -13,12 +13,10 @@ import { Route, Routes } from "react-router-dom";
 
 import {
   IconButton,
-  Avatar,
   Box,
   CloseButton,
   Flex,
   Input,
-  InputLeftAddon,
   Icon,
   useColorModeValue,
   Text,
@@ -31,11 +29,8 @@ import {
   Image,
   Spacer,
 } from "@chakra-ui/react";
-import {
-  FiTrendingUp,
-  FiMenu,
-} from "react-icons/fi";
-import { MdLastPage ,MdSkipNext ,MdNewReleases   } from "react-icons/md";
+import { FiTrendingUp, FiMenu } from "react-icons/fi";
+import { MdLastPage, MdSkipNext, MdNewReleases } from "react-icons/md";
 import { IconType } from "react-icons";
 import { useState } from "react";
 import Strategy from "../Strategy/Strategy.tsx";
@@ -80,10 +75,10 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Last 30 days", icon: MdLastPage  , to: "/lastdays" },
-  { name: "This week", icon: FiTrendingUp,to: "/thisweek" },
-  { name: "Next week", icon: MdSkipNext ,to: "/nextweek" },
-  { name: "Release calendar", icon: MdNewReleases  ,to: "/releasecalendar" },
+  { name: "Last 30 days", icon: MdLastPage, to: "/lastdays" },
+  { name: "This week", icon: FiTrendingUp, to: "/thisweek" },
+  { name: "Next week", icon: MdSkipNext, to: "/nextweek" },
+  { name: "Release calendar", icon: MdNewReleases, to: "/releasecalendar" },
 ];
 
 const LinkItemsGenres: Array<LinkItemGenresProps> = [
@@ -114,7 +109,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         h="full"
         {...rest}
       >
-        <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+        <Flex alignItems="center" mx="8" justifyContent="space-between">
           <Text
             color={"white"}
             fontSize="3xl"
@@ -131,55 +126,58 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           />
         </Flex>
         <Link className="text-decoration-none" to={"/home"}>
-          <Box   ml={6}
-            pt={2}
+          <Box
+            ml={6}
             fontSize={"3xl"}
             color={"white"}
             _hover={{
               opacity: 0.5,
               direction: "none",
-            }}>
+            }}
+          >
             Home
           </Box>
         </Link>
 
         {LinkItems.map((link, index1) => (
-          <Link   key={link.name}
-          className="text-decoration-none"
-          to={`${link.to}`}>
-          <Box key={link.name}>
-            <Flex
-              align="center"
-              mx="6"
-              role="group"
-              color="white"
-             
-              cursor="pointer"
-              onClick={() => handleItemClick(index1)}
-            >
-              <Box
-                className={`${styles.PaddingIcon} ${`${
-                  index1 === activeItem ? `${styles.active}` : ""
-                }`} `}
+          <Link
+            key={link.name}
+            className="text-decoration-none"
+            to={`${link.to}`}
+          >
+            <Box key={link.name}>
+              <Flex
+                align="center"
+                mx="6"
+                role="group"
+                color="white"
+                cursor="pointer"
+                onClick={() => handleItemClick(index1)}
               >
-                <Icon
-                  color="#fff"
-                  fontSize={"2xl"}
-                  aria-label="Call Sage"
-                  className={styles.icon}
-                  as={link.icon}
-                />
-              </Box>
-              {link.name}
-            </Flex>
-          </Box>
+                <Box
+                  className={`${styles.PaddingIcon} ${`${
+                    index1 === activeItem ? `${styles.active}` : ""
+                  }`} `}
+                >
+                  <Icon
+                    color="#fff"
+                    fontSize={"2xl"}
+                    aria-label="Call Sage"
+                    className={styles.icon}
+                    as={link.icon}
+                  />
+                </Box>
+                {link.name}
+              </Flex>
+            </Box>
           </Link>
-          
         ))}
-        <Link className={`text-decoration-none ${styles.LinkText}`} to={"/games"}>
+        <Link
+          className={`text-decoration-none ${styles.LinkText}`}
+          to={"/games"}
+        >
           <Text
             ml={6}
-            pt={2}
             fontSize={"3xl"}
             color={"white"}
             _hover={{
@@ -305,18 +303,20 @@ const SidebarWithHeader = () => {
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
-      <Drawer
-        isOpen={isOpen}
-        onClose={onClose}
-        returnFocusOnClose={true}
-        onOverlayClick={onClose}
-        colorScheme="white"
-        size="xs"
-      >
-        <DrawerContent bg={useColorModeValue("#151515", "#151515")}>
-          <SidebarContent className={styles.zIndex} onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
+      <Box width={"100px"}>
+        <Drawer
+          isOpen={isOpen}
+          onClose={onClose}
+          returnFocusOnClose={true}
+          onOverlayClick={onClose}
+          colorScheme="white"
+        >
+          <DrawerContent bg={useColorModeValue("#151515", "#151515")}>
+            <SidebarContent className={styles.zIndex} onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+      </Box>
+
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="2">
